@@ -1,11 +1,17 @@
-
-import { ReactNode } from 'react';
-
-
-export default function DashboardLayout({ children }: { children: ReactNode }) {
+import ContentDashBoard from "@/app/components/dashboard/PageDashBoard";
+import FooterLayout from "@/app/components/FooterLayout";
+import HeaderLayout from "@/app/components/HeaderLayout";
+import { Container } from "@mui/material";
+import { ReactNode } from "react";
+export type DashboardLayoutProps = {
+  children: ReactNode;
+};
+export default function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
-    <div className="flex min-h-screen">
-      <div className="flex-1 p-6">{children}</div>
-    </div>
+    <Container maxWidth="xl">
+      <HeaderLayout />
+      <ContentDashBoard>{children}</ContentDashBoard>
+      <FooterLayout />
+    </Container>
   );
 }

@@ -1,8 +1,5 @@
-'use client';
-import { Box } from '@mui/material';
+"use client";
+
 export default function DashboardPage() {
-  
-  return (
-    <Box>DASHBOARD</Box>
-  );
+  return <>DashBoard</>;
 }

@@ -22,10 +22,7 @@ export function AppThemeProvider({ children }: { children: React.ReactNode }) {
   };
 
   // MUI theme thay đổi theo context
-  const theme = useMemo(
-    () =>(getDesignTokens(mode)),
-    [mode]
-  );
+  const theme = useMemo(() => getDesignTokens(mode), [mode]);
   return (
     <ThemeContext.Provider value={{ mode, toggleMode }}>
       <ThemeProvider theme={theme}>

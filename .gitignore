@@ -1,5 +1,6 @@
 # Node modules
 node_modules/
+nodejs2015typescript/
 #dist
 dist/
 #next 

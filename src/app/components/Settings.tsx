@@ -1,9 +1,10 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Fade from '@mui/material/Fade';
+import * as React from "react";
+import Button from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Fade from "@mui/material/Fade";
 import { Icon } from "@iconify/react";
+import Link from "next/link";
 
 export default function Settings() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -17,21 +18,21 @@ export default function Settings() {
 
   return (
     <div>
-      <Button sx={{color:"#fff"}}
+      <Button
+        sx={{ color: "#fff" }}
         id="fade-button"
-        aria-controls={open ? 'fade-menu' : undefined}
+        aria-controls={open ? "fade-menu" : undefined}
         aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
+        aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >
         <Icon icon="material-symbols:settings" width="24" height="24" />
-        
       </Button>
       <Menu
         id="fade-menu"
         slotProps={{
           list: {
-            'aria-labelledby': 'fade-button',
+            "aria-labelledby": "fade-button",
           },
         }}
         slots={{ transition: Fade }}
@@ -41,7 +42,9 @@ export default function Settings() {
       >
         <MenuItem onClick={handleClose}>Profile</MenuItem>
         <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+        <MenuItem onClick={handleClose}>
+          <Link href="/login">Login</Link>
+        </MenuItem>
       </Menu>
     </div>
   );

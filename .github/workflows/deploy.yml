@@ -1,0 +1,31 @@
+name: CI/CD Deploy
+
+on:
+  push:
+    branches:
+      - master   # chỉ chạy khi push lên main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/thl
+          chmod 600 ~/.ssh/thl
+          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to VPS with rsync
+        run: |
+          rsync -avz --delete ./ \
+            ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:${{ secrets.APP_PATH }}
+
+      - name: Restart app (PM2 example)
+        run: |
+          ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} \
+            "cd ${{ secrets.APP_PATH }} && npm install && pm2 restart all || pm2 start npm -- run start"
