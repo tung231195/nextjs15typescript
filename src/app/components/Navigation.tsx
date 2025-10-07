@@ -4,6 +4,7 @@ import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
 import Link from "next/link";
 import Settings from "./Settings";
 import ToogleDarkMode from "./ToogleDarkLight";
+import Notifycations from "./Notification";
 
 export default function Navigation() {
   return (
@@ -36,6 +37,7 @@ export default function Navigation() {
             <LocaleSwitcher />
             <Settings />
             <ToogleDarkMode />
+            <Notifycations />
           </Toolbar>
         </AppBar>
       </Box>

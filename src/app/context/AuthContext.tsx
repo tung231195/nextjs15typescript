@@ -24,6 +24,7 @@ const AuthConextProvider = ({ children }: { children: React.ReactNode }) => {
     let isMounted = true;
     if (typeof window === "undefined") return;
     const userData = localStorage.getItem("user");
+    console.log("user data effect", userData);
     if (userData && isMounted) {
       try {
         const parsed = JSON.parse(userData) as User;

@@ -7,5 +7,5 @@ type Props = {
 };
 
 export default function PageLayout({ children }: Props) {
-  return <Box sx={{ height: "100vh" }}>{children}</Box>;
+  return <Box sx={{ height: "auto" }}>{children}</Box>;
 }

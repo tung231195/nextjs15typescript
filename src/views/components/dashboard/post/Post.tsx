@@ -32,7 +32,6 @@ const Post = () => {
       GridTreeNodeWithRender
     >,
   ) => {
-    console.log("params", params);
     setOpenModal({ open: true, id: params.row._id });
   };
 

@@ -1,9 +1,9 @@
-import { Post } from "@/app/types";
+import { LikeType, PostType } from "@/app/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { addPost, deletePost, fetchPosts } from "../../actions/post";
 
 interface PostState {
-  posts: Post[];
+  posts: PostType[];
   loading: boolean;
   error: string | null;
 }
@@ -22,6 +22,44 @@ const postSlice = createSlice({
       state.posts = [];
       state.loading = false;
     },
+    updatePostLike: (state, action: PayloadAction<{ post: string; user: string; _id: string }>) => {
+      const { post, user, _id } = action.payload;
+      const postItem = state.posts.find((p) => p._id === post);
+
+      if (postItem) {
+        // Đảm bảo mảng likes tồn tại
+        if (!Array.isArray(postItem.likes)) {
+          postItem.likes = [];
+          postItem.likesCount = 0;
+        }
+        postItem.likes.push({ _id, user, post });
+        postItem.likesCount = postItem.likes.length;
+        const findPostIndex = state.posts.findIndex((p) => p._id == post);
+        state.posts[findPostIndex] = postItem;
+        console.log("post like", postItem, state.posts);
+      }
+    },
+    updatePostUnLike: (
+      state,
+      action: PayloadAction<{ post: string; user: string; _id: string }>,
+    ) => {
+      const { post, _id } = action.payload;
+      const postItem = state.posts.find((p) => p._id === post);
+      if (!Array.isArray((postItem as any).likes)) {
+        (postItem as any).likes = [];
+      }
+      if (postItem) {
+        // Đảm bảo mảng likes tồn tại
+        if (!Array.isArray(postItem.likes)) {
+          postItem.likes = [];
+          postItem.likesCount = 0;
+        }
+        postItem.likes = postItem.likes.filter((like: LikeType) => like._id !== _id);
+        postItem.likesCount = postItem.likes.length;
+        const findPostIndex = state.posts.findIndex((p) => p._id == post);
+        state.posts[findPostIndex] = postItem;
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -30,7 +68,7 @@ const postSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchPosts.fulfilled, (state, action: PayloadAction<Post[]>) => {
+      .addCase(fetchPosts.fulfilled, (state, action: PayloadAction<PostType[]>) => {
         state.loading = false;
         state.posts = action.payload;
       })
@@ -44,7 +82,7 @@ const postSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(addPost.fulfilled, (state, action: PayloadAction<Post>) => {
+      .addCase(addPost.fulfilled, (state, action: PayloadAction<PostType>) => {
         state.loading = false;
         state.posts = [...state.posts, action.payload];
       })
@@ -69,5 +107,5 @@ const postSlice = createSlice({
   },
 });
 
-export const { reset } = postSlice.actions;
+export const { reset, updatePostLike, updatePostUnLike } = postSlice.actions;
 export default postSlice.reducer;

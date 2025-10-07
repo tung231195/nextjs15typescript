@@ -3,7 +3,7 @@ import { Locale, NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import "./global.css";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import { AuthConextProvider } from "../context/AuthContext";
 import { AppThemeProvider } from "../context/ThemeContext";
 import { ProviderReduxt } from "../components/ProviderReduxt";

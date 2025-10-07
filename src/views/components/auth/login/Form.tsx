@@ -7,6 +7,8 @@ import CustomTextField from "@/app/components/custom/CustomTextField";
 import { useAuthContext } from "@/app/context/AuthContext";
 import { TParamsLogin } from "@/app/types";
 import { useRouter } from "next/navigation";
+import GoogleLoginButton from "./GoolgeSignInButton";
+import FacebookLoginButton from "./FacebookLoginButton";
 
 const LoginForm = () => {
   type FormData = {
@@ -82,15 +84,13 @@ const LoginForm = () => {
             control={control}
             autoComplete="current-password"
           />
-          <Button fullWidth sx={{ mt: 2, float: "right" }} type="submit" variant="contained">
+          <Button fullWidth sx={{ mt: 2 }} type="submit" variant="contained">
             Login
           </Button>
-          <Button fullWidth sx={{ mt: 2, float: "right" }} variant="outlined">
-            Login with google
-          </Button>
-          <Button fullWidth sx={{ mt: 2, float: "right" }} type="submit" variant="outlined">
-            Login with facebook
-          </Button>
+          <Box>
+            <GoogleLoginButton />
+            <FacebookLoginButton />
+          </Box>
         </form>
       </Box>
     </Box>
