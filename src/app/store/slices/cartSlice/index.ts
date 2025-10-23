@@ -114,7 +114,7 @@ const cartSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(orderAction.fulfilled, (state, action: PayloadAction<OrderItem>) => {
+      .addCase(orderAction.fulfilled, (state) => {
         state.loading = false;
         state.carts = [];
       })
