@@ -3,27 +3,30 @@ import NotificationsIcon from "@mui/icons-material/NotificationsNone";
 import { useEffect, useState } from "react";
 import { useSocket } from "../hooks/useSocket";
 import { Badge, Box, Divider, IconButton, Menu, MenuItem, Typography } from "@mui/material";
-import { CommentType } from "../types";
 const Notifycations = () => {
   const [notifications, setNotifications] = useState<string[]>([]);
   const { onEvent } = useSocket();
   useEffect(() => {
     if (!onEvent) return;
+
     const off = onEvent("comment.notify", (msg: any) => {
       setNotifications((prev) => [...prev, msg.data.user?.email]);
     });
-    return off;
-  }, []);
 
+    // Đảm bảo cleanup function trả về void
+    return () => {
+      if (typeof off === "function") off();
+    };
+  }, [onEvent]);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleOpen = (e: React.MouseEvent<HTMLElement>) => setAnchorEl(e.currentTarget);
   const handleClose = () => setAnchorEl(null);
 
-  const handleClickNotification = (postId: string) => {
-    handleClose();
-  };
-  console.log("notifycation", notifications);
+  // const handleClickNotification = (postId: string) => {
+  //   handleClose();
+  // };
+
   return (
     <Box>
       <IconButton color="inherit" onClick={handleOpen}>

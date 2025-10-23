@@ -24,11 +24,9 @@ const Post = () => {
 
   const handleEditRow = (
     params: GridRenderCellParams<
-      PostType & {
-        id: string;
-      },
-      any,
-      any,
+      PostType & { id: string },
+      unknown,
+      unknown,
       GridTreeNodeWithRender
     >,
   ) => {

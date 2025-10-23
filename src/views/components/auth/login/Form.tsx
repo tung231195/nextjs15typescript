@@ -33,14 +33,12 @@ const LoginForm = () => {
   });
 
   /** context  */
-  const { login, isLogin } = useAuthContext();
+  const { login } = useAuthContext();
 
   const onSubmit = async (data: TParamsLogin) => {
     console.log("data submit", data);
     await login(data);
-    if (isLogin) {
-      route.push("/");
-    }
+    route.push("/");
   };
 
   return (

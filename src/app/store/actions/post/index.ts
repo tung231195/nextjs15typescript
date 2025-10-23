@@ -4,7 +4,7 @@ import {
   getPostsService,
   updatePostService,
 } from "@/app/services/postService";
-import { PostType } from "@/app/types";
+import { PostCreate, PostType } from "@/app/types";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 // Thunk Actions
@@ -15,8 +15,9 @@ export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
 });
 
 /** add post */
-export const addPost = createAsyncThunk("posts/addPost", async (post: Omit<PostType, "_id">) => {
-  return await addPostsService(post);
+export const addPost = createAsyncThunk("posts/addPost", async (post: Omit<PostCreate, "_id">) => {
+  const res = await addPostsService(post);
+  return res;
 });
 
 /** update post */

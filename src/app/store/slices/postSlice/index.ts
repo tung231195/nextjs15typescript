@@ -45,8 +45,8 @@ const postSlice = createSlice({
     ) => {
       const { post, _id } = action.payload;
       const postItem = state.posts.find((p) => p._id === post);
-      if (!Array.isArray((postItem as any).likes)) {
-        (postItem as any).likes = [];
+      if (postItem && !Array.isArray(postItem.likes)) {
+        postItem.likes = [];
       }
       if (postItem) {
         // Đảm bảo mảng likes tồn tại

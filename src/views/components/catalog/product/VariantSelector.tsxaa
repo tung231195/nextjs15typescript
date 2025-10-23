@@ -1,0 +1,68 @@
+"use client";
+
+import { Product, ProductVariant } from "@/app/types";
+import { Box, Button, Typography } from "@mui/material";
+
+import { useState } from "react";
+
+interface Props {
+  product: Product;
+  onVariantChange: (variant: ProductVariant | null) => void;
+}
+
+export default function VariantSelector({ product, onVariantChange }: Props) {
+  const [selected, setSelected] = useState<Record<string, string>>({});
+
+  const handleSelect = (attrName: string, value: string) => {
+    const updated = { ...selected, [attrName]: value };
+    console.log("attrname", attrName, "v", value, updated);
+    setSelected(updated);
+
+    // Tìm variant khớp với lựa chọn
+    const matched =
+      product &&
+      product.variants.find((v) => {
+        console.log("vvvvvvvvv", v);
+        return v.attributes.every((attr) => updated[attr.attribute] === attr.valueString);
+      });
+    console.log("match", matched);
+    onVariantChange(matched || null);
+  };
+  console.log("product data", product);
+  // Nhóm các option theo attribute
+  const attributeOptions =
+    product &&
+    product.variants.reduce(
+      (acc, variant) => {
+        variant.attributes.forEach((attr) => {
+          const attrName = attr.attribute;
+          if (!acc[attrName]) acc[attrName] = new Set();
+          if (attr.valueString) acc[attrName].add(attr.valueString);
+        });
+        return acc;
+      },
+      {} as Record<string, Set<string>>,
+    );
+  console.log("attributeOptions", attributeOptions);
+  return (
+    <Box sx={{ mt: 2 }}>
+      {attributeOptions &&
+        Object.entries(attributeOptions).map(([attrName, values]) => (
+          <Box key={attrName} sx={{ mb: 2 }}>
+            {/* <Typography fontWeight={600}>{attrName}</Typography> */}
+            <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", mt: 1 }}>
+              {Array.from(values).map((val) => (
+                <Button
+                  key={val}
+                  variant={selected[attrName] === val ? "contained" : "outlined"}
+                  onClick={() => handleSelect(attrName, val)}
+                >
+                  {val}
+                </Button>
+              ))}
+            </Box>
+          </Box>
+        ))}
+    </Box>
+  );
+}

@@ -44,12 +44,12 @@ export const useSocket = () => {
   }, []);
 
   // Tiện ích gửi event
-  const emitEvent = (event: string, data?: any) => {
+  const emitEvent = (event: string, data?: unknown) => {
     socketRef.current?.emit(event, data);
   };
 
   // Tiện ích lắng nghe event
-  const onEvent = (event: string, callback: (...args: any[]) => void) => {
+  const onEvent = (event: string, callback: (...args: unknown[]) => void) => {
     socketRef.current?.on(event, callback);
     return () => socketRef.current?.off(event, callback);
   };

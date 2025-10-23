@@ -5,6 +5,7 @@ import Link from "next/link";
 import Settings from "./Settings";
 import ToogleDarkMode from "./ToogleDarkLight";
 import Notifycations from "./Notification";
+import MiniCart from "./MiniCart";
 
 export default function Navigation() {
   return (
@@ -35,6 +36,7 @@ export default function Navigation() {
               </Button>
             </Box>
             <LocaleSwitcher />
+            <MiniCart />
             <Settings />
             <ToogleDarkMode />
             <Notifycations />

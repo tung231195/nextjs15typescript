@@ -5,6 +5,10 @@ type TPropTextField<T extends FieldValues> = {
   control: Control<T>;
 } & TextFieldProps;
 const StyleTextField = styled(TextField)({
+  "& .MuiFormControl-root": {
+    marginTop: "16px !important",
+    color: "red !important",
+  },
   "& .MuiOutlinedInput-root": {
     marginTop: "15px",
     borderRadius: 10,

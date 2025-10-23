@@ -22,7 +22,6 @@ const PostDetail = () => {
   const [comment, setComment] = useState<string>("");
   const [listComments, setListComments] = useState<CommentType[]>([]);
   const [post, setPost] = useState<PostType>();
-  const [notify, setNotify] = useState<string[]>([]);
   const params = useParams();
   const { id } = params;
   const { user } = useAuthContext();

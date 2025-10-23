@@ -47,10 +47,11 @@ const AuthConextProvider = ({ children }: { children: React.ReactNode }) => {
       localStorage.setItem("accessToken", res.accessToken);
     } catch (e: unknown) {
       localStorage.removeItem("user");
-      localStorage.re("accessToken");
+      localStorage.removeItem("accessToken");
       console.log(e);
     }
   };
+  console.log("is login context", isLogin);
   return <AuthContext.Provider value={{ isLogin, login, user }}>{children}</AuthContext.Provider>;
 };
 

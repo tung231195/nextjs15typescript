@@ -22,6 +22,18 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/page.tsx.bak", "src/app/layout.tsx", "src/app/[locale]/provider.tsx.bak"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "src/app/page.tsx.bak",
+    "src/app/layout.tsx",
+    "src/app/[locale]/provider.tsx.bak",
+    "nodejs2015typescript/src/controllers/paypal.controller.ts.paypal",
+    "src/views/components/catalog/product/VariantSelector.tsx",
+    "src/views/components/catalog/product/VariantSelector.tsx",
+    "src/views/components/catalog/product/VariantSelector.tsxaa"
+  ],
   "exclude": ["node_modules"]
 }
