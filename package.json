@@ -25,6 +25,7 @@
     "next": "^15.5.4",
     "next-intl": "^4.3.9",
     "normalize.css": "^8.0.1",
+    "qrcode.react": "^4.2.0",
     "react": "^19.0.0-rc.1",
     "react-dom": "^19.0.0-rc.1",
     "react-hook-form": "^7.63.0",

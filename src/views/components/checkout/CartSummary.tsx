@@ -1,5 +1,6 @@
 "use client";
 import useCart from "@/app/hooks/useCart";
+import customAxios from "@/app/utils/customAxious";
 import { Box, Typography, Button, Card, CardContent } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -33,9 +34,21 @@ export default function CartSummary() {
   // };
 
   const hanldeCheckout1 = async () => {
-    route.push("/checkout");
+    //route.push("/checkout");
     // const res = await customAxios.post("http://localhost:5000/api/payment", { items: cartItems });
     // window.location.href = res.data.url; // chuyển hướng tới Stripe
+    // const res = await fetch("http://localhost:5000/api/payment", {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify({ amount: 1, orderId: Date.now() }),
+    // });
+    const res = await customAxios.post("http://localhost:5000/api/payment", {
+      amount: 1000,
+      orderId: Date.now(),
+    });
+    const data = await res.data;
+    console.log("data vn", data);
+    window.location.href = data.paymentUrl; // redirect sang trang thanh toán VNPAY
   };
   return (
     <Card>

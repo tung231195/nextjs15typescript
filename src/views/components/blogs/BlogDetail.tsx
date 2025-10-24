@@ -17,22 +17,26 @@ import { useAuthContext } from "@/app/context/AuthContext";
 import toast from "react-hot-toast";
 import { getCommentsByPostService, hanldeCommentService } from "@/app/services/commentService";
 import { useSocket } from "@/app/hooks/useSocket";
-
-const PostDetail = () => {
+import ShareButtons from "@/app/components/ShareButtons";
+type TPropPostDetail = {
+  blog: PostType;
+};
+const PostDetail = (props: TPropPostDetail) => {
+  const { blog: post } = props;
   const [comment, setComment] = useState<string>("");
   const [listComments, setListComments] = useState<CommentType[]>([]);
-  const [post, setPost] = useState<PostType>();
+  // const [post, setPost] = useState<PostType>();
   const params = useParams();
   const { id } = params;
   const { user } = useAuthContext();
   const { onEvent, emitEvent } = useSocket();
-  useEffect(() => {
-    const fetchPost = async () => {
-      const fetchPost = await getPostService(id as string);
-      setPost(fetchPost);
-    };
-    fetchPost();
-  }, [id]);
+  // useEffect(() => {
+  //   const fetchPost = async () => {
+  //     const fetchPost = await getPostService(id as string);
+  //     setPost(fetchPost);
+  //   };
+  //   fetchPost();
+  // }, [id]);
 
   useEffect(() => {
     const fetchComments = async () => {
@@ -95,7 +99,7 @@ const PostDetail = () => {
           </Typography>
         </CardContent>
         <CardActions>
-          <Button size="small">Share</Button>
+          <ShareButtons slug={post?._id as string} title={post?.title as string} />
           <Button size="small">Learn More</Button>
         </CardActions>
       </Card>

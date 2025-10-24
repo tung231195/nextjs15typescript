@@ -1,17 +1,17 @@
 "use client";
-import { AppDispatch, RootState } from "@/app/store";
-import { fetchProducts } from "@/app/store/actions/product";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import ProductItem from "./ProductItem";
 import { Grid } from "@mui/material";
-
-const ProductList = () => {
-  const products = useSelector((state: RootState) => state.product.products);
-  const dispatch = useDispatch<AppDispatch>();
-  useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
+import { ProductType } from "@/app/types";
+type TPropProductList = {
+  products: ProductType[];
+};
+const ProductList = (props: TPropProductList) => {
+  //const products = useSelector((state: RootState) => state.product.products);
+  const { products } = props;
+  // const dispatch = useDispatch<AppDispatch>();
+  // useEffect(() => {
+  //   dispatch(fetchProducts());
+  // }, [dispatch]);
   return (
     <>
       <Grid container>

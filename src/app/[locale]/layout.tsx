@@ -21,7 +21,7 @@ export async function generateMetadata(props: Omit<LayoutProps<"/[locale]">, "ch
   });
 
   return {
-    title: t("title"),
+    title: "next js test",
   };
 }
 
