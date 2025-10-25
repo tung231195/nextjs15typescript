@@ -7,6 +7,7 @@ export const convertFileToBase64 = (file: File): Promise<string> => {
     reader.onerror = (error) => reject(error);
   });
 };
+export type AttributeOption = { value: string; label?: string } | string;
 
 export function generateVariantsFromAttributes(attributes: AttributeType[]): ProductVariant[] {
   const validAttributes = attributes.filter((a) => a.options && a.options.length > 0);
@@ -22,7 +23,7 @@ export function generateVariantsFromAttributes(attributes: AttributeType[]): Pro
   return combinations.map((values) => {
     const attributesMapped: ProductAttributeValue[] = validAttributes.map((attr, i) => {
       //const opt = values[i];
-      const opt = values[i] as any;
+      const opt = values[i] as AttributeOption;
       const value = typeof opt === "object" ? (opt.value ?? opt.label ?? JSON.stringify(opt)) : opt;
 
       return {
