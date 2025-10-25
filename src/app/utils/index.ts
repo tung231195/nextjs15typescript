@@ -21,7 +21,8 @@ export function generateVariantsFromAttributes(attributes: AttributeType[]): Pro
   // ✅ Map sang ProductVariant
   return combinations.map((values) => {
     const attributesMapped: ProductAttributeValue[] = validAttributes.map((attr, i) => {
-      const opt = values[i];
+      //const opt = values[i];
+      const opt = values[i] as any;
       const value = typeof opt === "object" ? (opt.value ?? opt.label ?? JSON.stringify(opt)) : opt;
 
       return {
