@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import { Locale, NextIntlClientProvider, hasLocale } from "next-intl";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { NextIntlClientProvider, hasLocale } from "next-intl";
+import { setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import "./global.css";
 import { Toaster } from "react-hot-toast";
@@ -13,12 +13,12 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata(props: Omit<LayoutProps<"/[locale]">, "children">) {
-  const { locale } = await props.params;
+  // const { locale } = await props.params;
 
-  const t = await getTranslations({
-    locale: locale as Locale,
-    namespace: "LocaleLayout",
-  });
+  // const t = await getTranslations({
+  //   locale: locale as Locale,
+  //   namespace: "LocaleLayout",
+  // });
 
   return {
     title: "next js test",

@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import { Locale, hasLocale, useTranslations } from "next-intl";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { hasLocale } from "next-intl";
+import { setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 
 import "normalize.css";
@@ -14,12 +14,12 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata(props: Omit<LayoutProps<"/[locale]">, "children">) {
-  const { locale } = await props.params;
+  // const { locale } = await props.params;
 
-  const t = await getTranslations({
-    locale: locale as Locale,
-    namespace: "LocaleLayout",
-  });
+  // const t = await getTranslations({
+  //   locale: locale as Locale,
+  //   namespace: "LocaleLayout",
+  // });
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL_NGOX || "http://localhost:3000";
   const metadata = {
     metadataBase: new URL(baseUrl),

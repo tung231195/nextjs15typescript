@@ -3,16 +3,19 @@ import NotificationsIcon from "@mui/icons-material/NotificationsNone";
 import { useEffect, useState } from "react";
 import { useSocket } from "../hooks/useSocket";
 import { Badge, Box, Divider, IconButton, Menu, MenuItem, Typography } from "@mui/material";
+interface CommentNotifyEvent {
+  data: { user?: { email?: string } };
+}
+
 const Notifycations = () => {
   const [notifications, setNotifications] = useState<string[]>([]);
   const { onEvent } = useSocket();
   useEffect(() => {
     if (!onEvent) return;
 
-    const off = onEvent("comment.notify", (msg: any) => {
-      setNotifications((prev) => [...prev, msg.data.user?.email]);
+    const off = onEvent<CommentNotifyEvent>("comment.notify", (msg: CommentNotifyEvent) => {
+      setNotifications((prev) => [...prev, msg.data.user?.email ?? ""]);
     });
-
     // Đảm bảo cleanup function trả về void
     return () => {
       if (typeof off === "function") off();

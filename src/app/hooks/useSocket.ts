@@ -49,9 +49,10 @@ export const useSocket = () => {
   };
 
   // Tiện ích lắng nghe event
-  const onEvent = (event: string, callback: (...args: unknown[]) => void) => {
-    socketRef.current?.on(event, callback);
-    return () => socketRef.current?.off(event, callback);
+  const onEvent = <T>(event: string, callback: (msg: T) => void) => {
+    const handler = (msg: T) => callback(msg);
+    socketRef.current?.on(event, handler);
+    return () => socketRef.current?.off(event, handler);
   };
 
   return {

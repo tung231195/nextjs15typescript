@@ -1,16 +1,13 @@
 import { getPostService } from "@/app/services/postService";
 import PostDetail from "@/views/components/blogs/BlogDetail";
-import type { Metadata, ResolvingMetadata } from "next";
+import type { Metadata } from "next";
 
 type Props = {
   params: Promise<{ id: string; locale: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
-export async function generateMetadata(
-  { params, searchParams }: Props,
-  parent: ResolvingMetadata,
-): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id, locale } = await params; // ✅ phải await
   const blog = await getPostService(id);
 
@@ -45,7 +42,7 @@ export async function generateMetadata(
 }
 
 // ✅ Page component
-export default async function PostDetailPage({ params, searchParams }: Props) {
+export default async function PostDetailPage({ params }: Props) {
   const { id } = await params; // ✅ phải await
   const blog = await getPostService(id);
   return <PostDetail blog={blog} />;

@@ -2,13 +2,12 @@
 import useCart from "@/app/hooks/useCart";
 import customAxios from "@/app/utils/customAxious";
 import { Box, Typography, Button, Card, CardContent } from "@mui/material";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function CartSummary() {
   const [enableCheckout, setEnableCheckout] = useState<boolean>(true);
   const { cartItems, totalPrice, totalQty } = useCart();
-  const route = useRouter();
+  // const route = useRouter();
   useEffect(() => {
     if (cartItems && cartItems.length > 0) setEnableCheckout(false);
   }, [cartItems]);

@@ -2,7 +2,6 @@
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { CommentType, PostType } from "@/app/types";
-import { getPostService } from "@/app/services/postService";
 import {
   Box,
   Button,

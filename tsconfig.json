@@ -33,7 +33,8 @@
     "nodejs2015typescript/src/controllers/paypal.controller.ts.paypal",
     "src/views/components/catalog/product/VariantSelector.tsx",
     "src/views/components/catalog/product/VariantSelector.tsx",
-    "src/views/components/catalog/product/VariantSelector.tsxaa"
+    "src/views/components/catalog/product/VariantSelector.tsxaa",
+    "src/app/[locale]/test/page.tsx.qrcode"
   ],
   "exclude": ["node_modules"]
 }

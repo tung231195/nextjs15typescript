@@ -1,6 +1,6 @@
-import { Locale, useTranslations } from "next-intl";
+import { Locale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { use } from "react";
+
 import PageLayout from "@/app/components/PageLayout";
 import BlogList from "@/views/components/blogs/BlogList";
 import ProductList from "@/views/components/catalog/ProductList";

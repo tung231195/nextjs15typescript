@@ -20,7 +20,7 @@ const config: NextConfig = {
     ];
   },
   eslint: {
-    ignoreDuringBuilds: true, // ⛔ Bỏ qua lỗi eslint khi deploy
+    ignoreDuringBuilds: false, // ⛔ Bỏ qua lỗi eslint khi deploy
   },
 };
 

@@ -74,18 +74,6 @@ export default async function ProductPage({ params }: TProductProps) {
       ratingValue: product.ratingValue,
       reviewCount: product.reviewCount || 1,
     },
-    review: product.reviews?.map((r: any) => ({
-      "@type": "Review",
-      author: { "@type": "Person", name: r.author },
-      datePublished: r.date,
-      reviewBody: r.body,
-      name: r.title,
-      reviewRating: {
-        "@type": "Rating",
-        ratingValue: r.rating,
-        bestRating: "5",
-      },
-    })),
   };
 
   return (
