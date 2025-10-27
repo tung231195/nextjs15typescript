@@ -90,13 +90,9 @@ const AttributeForm = (props: TPropAttributeForm) => {
       reset({
         name: attribute.name,
         type: attribute.type,
-        options: Array.isArray(attribute.options)
-          ? attribute.options.map((opt: any) =>
-              typeof opt === "string"
-                ? { label: opt, value: opt } // ✅ convert string → {label, value}
-                : opt,
-            )
-          : [], // fallback nếu undefined
+        options: (attribute?.options || []).map((opt: string | IOption) =>
+          typeof opt === "string" ? { label: opt, value: opt } : opt,
+        ), // fallback nếu undefined
         isFilterable: attribute.isFilterable ?? true,
         isVisible: attribute.isVisible ?? true,
         unit: "kg",
