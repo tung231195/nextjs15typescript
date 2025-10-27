@@ -10,7 +10,7 @@ import { AppDispatch, RootState } from "@/app/store";
 import { addProduct, updateProduct } from "@/app/store/actions/product";
 import { useCallback, useEffect, useState } from "react";
 import { getProductService } from "@/app/services/productService";
-import { CategoryType, ProductAttributeValue, ProductType, ProductVariant } from "@/app/types";
+import { ProductAttributeValue, ProductType, ProductVariant } from "@/app/types";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import CustomRichEditor from "@/app/components/custom/CustomRichEditor";
@@ -57,7 +57,7 @@ const ProductForm = (props: TPropProductForm) => {
     name: string;
     description: string;
     images: string[];
-    category: CategoryType;
+    category: string;
     price: number;
     stock: number;
     variants: ProductVariant[];
@@ -87,7 +87,7 @@ const ProductForm = (props: TPropProductForm) => {
     stock: yup.number().required("The Price is required"),
     description: yup.string().required("the description is required"),
     images: yup.array().of(yup.string().defined()).optional().default([]),
-    category: yup.string().defined().optional().default(""),
+    category: yup.string().required("The Title is required"),
     variants: yup.array().of(productVariantSchema).default([]),
     attributes: yup.array().of(
       yup.object({
@@ -102,7 +102,7 @@ const ProductForm = (props: TPropProductForm) => {
       name: "",
       description: "",
       images: [],
-      category: { _id: "", name: "", description: "" },
+      category: "",
       price: 0,
       stock: 0,
       variants: [],
@@ -130,12 +130,13 @@ const ProductForm = (props: TPropProductForm) => {
 
   useEffect(() => {
     console.log("product options", product);
+    if (!product) return;
     if (openModal.id) {
       reset({
         name: product?.name,
         description: product?.description,
         images: product?.images ?? [],
-        category: product?.category._id,
+        category: product.category ?? "",
         variants: product?.variants ?? [],
         attributes: product?.attributes ?? [],
       });
