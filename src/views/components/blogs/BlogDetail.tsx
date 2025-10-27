@@ -91,7 +91,7 @@ const PostDetail = (props: TPropPostDetail) => {
             {post?.title}
           </Typography>
           <Typography gutterBottom variant="caption" component="div">
-            {post?.user?.email}
+            {post?.user}
           </Typography>
           <Typography variant="body2" sx={{ color: "text.secondary" }}>
             {post?.content}
