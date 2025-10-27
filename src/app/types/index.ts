@@ -5,7 +5,7 @@ export type TParamsLogin = {
 
 export type PostType = {
   _id: string;
-  user: User;
+  user: string;
   title: string;
   content: string;
   picture?: string;

@@ -84,7 +84,9 @@ const PostForm = (props: TPropPostForm) => {
       return;
     }
     if (openModal.id) {
-      dispatch(updatePost({ ...data, user: user?._id, _id: openModal.id }));
+      dispatch(
+        updatePost({ ...data, user: user?._id, _id: openModal.id, likes: [], likesCount: 0 }),
+      );
       toast.success("Update Succesfully");
     } else {
       dispatch(addPost({ ...data, user: user?._id }));
