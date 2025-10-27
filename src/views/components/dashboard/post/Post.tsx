@@ -40,7 +40,7 @@ const Post = () => {
       headerName: "User",
       width: 150,
       editable: true,
-      renderCell: (params) => <span>{params.row.user?.email}</span>,
+      renderCell: (params) => <span>{params.row.user}</span>,
     },
     { field: "title", headerName: "Title", width: 150, editable: true },
     { field: "content", headerName: "Content", width: 110, editable: true },
