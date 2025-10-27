@@ -29,7 +29,7 @@ const ProductDetail = () => {
       <Grid container spacing={4}>
         {/* Left: Image gallery */}
         <Grid size={{ xs: 12, md: 6 }}>
-          <ProductGallery images={product?.images} />
+          <ProductGallery images={product?.images ? product?.images : []} />
         </Grid>
 
         {/* Right: Info */}
@@ -47,8 +47,7 @@ const ProductDetail = () => {
           </Typography>
 
           <Divider sx={{ my: 3 }} />
-
-          <VariantSelector product={product} onVariantChange={setSelectedVariant} />
+          {product && <VariantSelector product={product} onVariantChange={setSelectedVariant} />}
 
           {selectedVariant && (
             <Typography variant="h6" sx={{ mt: 2 }}>
