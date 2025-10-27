@@ -35,19 +35,23 @@ const AttributeForm = (props: TPropAttributeForm) => {
     isFilterable: boolean;
     isVisible: boolean;
     unit?: string;
-    options?: IOption[];
+    options: IOption[];
   };
   const schema = yup.object().shape({
     name: yup.string().required("The Title is required"),
     type: yup.string().required("The Content is required"),
-    isFilterable: yup.boolean(),
-    isVisible: yup.boolean(),
-    options: yup.array().of(
-      yup.object({
-        label: yup.string().required("Option label is required"),
-        value: yup.mixed<string | number>().required("Option value is required"),
-      }),
-    ),
+    isFilterable: yup.boolean().required(),
+    isVisible: yup.boolean().required(),
+    options: yup
+      .array()
+      .of(
+        yup.object({
+          label: yup.string().required("Option label is required"),
+          value: yup.mixed<string | number>().required("Option value is required"),
+        }),
+      )
+      .default([])
+      .required(),
   });
   const {
     control,
@@ -82,19 +86,32 @@ const AttributeForm = (props: TPropAttributeForm) => {
   }, [openModal.id, fetchAttributeByIdCallBack]);
 
   useEffect(() => {
-    if (openModal.id) {
+    if (openModal.id && attribute) {
       reset({
-        name: attribute?.name,
-        type: attribute?.type,
-        options: attribute?.options,
+        name: attribute.name,
+        type: attribute.type,
+        options: Array.isArray(attribute.options)
+          ? attribute.options.map((opt: any) =>
+              typeof opt === "string"
+                ? { label: opt, value: opt } // ✅ convert string → {label, value}
+                : opt,
+            )
+          : [], // fallback nếu undefined
+        isFilterable: attribute.isFilterable ?? true,
+        isVisible: attribute.isVisible ?? true,
+        unit: "kg",
       });
     } else {
       reset({
         name: "",
         type: "",
+        options: [],
+        isFilterable: true,
+        isVisible: true,
+        unit: "kg",
       });
     }
-  }, [attribute, reset, openModal.id]);
+  }, [attribute, openModal.id, reset]);
 
   /** context  */
   const { user } = useAuthContext();
@@ -103,13 +120,23 @@ const AttributeForm = (props: TPropAttributeForm) => {
       router.push("/login");
       return;
     }
+
+    const payload = {
+      ...data,
+      options:
+        data.type === "enum"
+          ? data.options.map((opt) => opt.value.toString()) // ✅ convert object[] → string[]
+          : [],
+    };
+
     if (openModal.id) {
-      dispatch(updateAttribute({ ...data, _id: openModal.id }));
-      toast.success("Update Succesfully");
+      dispatch(updateAttribute({ ...payload, _id: openModal.id }));
+      toast.success("Update Successfully");
     } else {
-      dispatch(addAttribute(data));
-      toast.success("Add New  Succesfully");
+      dispatch(addAttribute(payload));
+      toast.success("Add New Successfully");
     }
+
     handleClose();
   };
 
