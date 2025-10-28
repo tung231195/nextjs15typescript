@@ -25,7 +25,7 @@ export default function Navigation() {
               <Button color="inherit" component={Link} href="/about">
                 About
               </Button>
-              <Button color="inherit" component={Link} href="/blogs">
+              <Button color="inherit" component={Link} href="/blog">
                 My Blogs
               </Button>
               <Button color="inherit" component={Link} href="/contact">
