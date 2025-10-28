@@ -9,6 +9,7 @@ import { Container } from "@mui/material";
 import HeaderLayout from "@/app/components/HeaderLayout";
 import FooterLayout from "@/app/components/FooterLayout";
 import StructuredData from "@/app/components/StructuredData";
+import Breadcrumb from "@/app/components/BreadCrumb";
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
@@ -57,6 +58,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
         <StructuredData data={schemaOrg} />
       </header>
       <HeaderLayout />
+      <Breadcrumb />
       {children}
       <FooterLayout />
     </Container>
