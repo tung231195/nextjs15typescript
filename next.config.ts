@@ -15,7 +15,7 @@ const config: NextConfig = {
     return [
       {
         source: "/uploads/:path*",
-        destination: "http://localhost:5000/uploads/:path*", // proxy từ frontend -> backend
+        destination: `${process.env.NEXT_PUBLIC_BACKEND_URL}/uploads/:path*`, // proxy từ frontend -> backend
       },
     ];
   },
