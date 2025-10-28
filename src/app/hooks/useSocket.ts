@@ -8,7 +8,7 @@ let socket: Socket | null = null;
 // 👉 Hàm khởi tạo socket (singleton)
 const getSocket = () => {
   if (!socket) {
-    socket = io(process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:5000", {
+    socket = io(process.env.NEXT_PUBLIC_SOCKET_URL || "https://nodejs2015typescript.onrender.com", {
       transports: ["websocket"],
       autoConnect: false, // tránh kết nối sớm
     });

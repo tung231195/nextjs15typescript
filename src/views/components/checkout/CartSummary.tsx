@@ -41,7 +41,7 @@ export default function CartSummary() {
     //   headers: { "Content-Type": "application/json" },
     //   body: JSON.stringify({ amount: 1, orderId: Date.now() }),
     // });
-    const res = await customAxios.post("http://localhost:5000/api/payment", {
+    const res = await customAxios.post("https://nodejs2015typescript.onrender.com/api/payment", {
       amount: 1000,
       orderId: Date.now(),
     });

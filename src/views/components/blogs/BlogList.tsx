@@ -14,7 +14,8 @@ import toast from "react-hot-toast";
 import { updatePostLike, updatePostUnLike } from "@/app/store/slices/postSlice";
 
 //const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
-const NOTIF = process.env.NEXT_PUBLIC_NOTIFICATION_URL || "http://localhost:5000";
+const NOTIF =
+  process.env.NEXT_PUBLIC_NOTIFICATION_URL || "https://nodejs2015typescript.onrender.com";
 
 export default function BlogList() {
   const { user } = useAuthContext();

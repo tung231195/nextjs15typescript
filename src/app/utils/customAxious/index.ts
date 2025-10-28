@@ -2,7 +2,8 @@ import axios from "axios";
 
 // Tạo instance
 const customAxios = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_customAxios_URL || "http://localhost:5000/api",
+  baseURL:
+    process.env.NEXT_PUBLIC_customAxios_URL || "https://nodejs2015typescript.onrender.com/api",
   timeout: 10000, // 10s
   headers: {
     "Content-Type": "application/json",
