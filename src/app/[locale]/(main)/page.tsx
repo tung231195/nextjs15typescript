@@ -33,6 +33,7 @@ export default async function IndexPage({ params }: TPageProps) {
 
   const t = await getTranslations("IndexPage");
   const productList = await getProductsService();
+  console.log("product list data", productList);
   return (
     <PageLayout title={t("title")}>
       <ProductList products={productList} />
