@@ -46,3 +46,31 @@ export function generateVariantsFromAttributes(attributes: AttributeType[]): Pro
     };
   });
 }
+
+export function generateSKU(
+  productName: string,
+  attributes: {
+    attribute: string;
+    valueString?: string;
+    valueNumber?: number;
+    valueBoolean?: boolean;
+  }[],
+) {
+  // Chuyển tên -> dạng code-friendly (ví dụ "T Shirt" -> "T-SHIRT")
+  const base = productName
+    .trim()
+    .toUpperCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^A-Z0-9-]/g, "");
+
+  // Lấy giá trị từng thuộc tính (attribute)
+  const attrValues = attributes.map((a) => {
+    if (a.valueString) return a.valueString.toUpperCase();
+    if (a.valueNumber !== undefined) return a.valueNumber.toString();
+    if (a.valueBoolean !== undefined) return a.valueBoolean ? "YES" : "NO";
+    return "";
+  });
+
+  // Gộp lại -> "T-SHIRT-RED-M"
+  return [base, ...attrValues.filter(Boolean)].join("-");
+}

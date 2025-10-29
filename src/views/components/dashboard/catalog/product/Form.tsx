@@ -1,5 +1,5 @@
 "use client";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Button } from "@mui/material";
@@ -26,7 +26,7 @@ import { fetchCategories } from "@/app/store/actions/category";
 import { fetchAttributes } from "@/app/store/actions/attribute";
 import ProductVariantForm from "./ProductVariant";
 import { FormProvider } from "react-hook-form";
-import { generateVariantsFromAttributes } from "@/app/utils";
+import { generateSKU, generateVariantsFromAttributes } from "@/app/utils";
 import ProductAttributeForm from "./ProductAttribute";
 
 type TPropProductForm = {
@@ -71,47 +71,37 @@ const ProductForm = (props: TPropProductForm) => {
     variants: ProductVariant[];
     attributes: ProductAttributeValue[];
   };
-  const productVariantSchema = yup.object({
+  // ✅ Định nghĩa schema cho các phần con trước
+  const productAttributeValueSchema: yup.ObjectSchema<ProductAttributeValue> = yup.object({
+    attribute: yup.string().required("Attribute is required"),
+    valueString: yup.string().optional(),
+    valueNumber: yup.number().optional(),
+    valueBoolean: yup.boolean().optional(),
+  });
+
+  const productVariantSchema: yup.ObjectSchema<ProductVariant> = yup.object({
+    _id: yup.string().optional(),
     sku: yup.string().required("SKU is required"),
     price: yup.number().required("Variant price is required"),
     stock: yup.number().required("Variant stock is required"),
-    attributes: yup
-      .array()
-      .of(
-        yup.object({
-          attribute: yup.string().required("Attribute is required"),
-          valueString: yup.string().optional(),
-          valueNumber: yup.number().optional(),
-          valueBoolean: yup.boolean().optional(),
-        }),
-      )
-      .required(),
-    images: yup.array().of(yup.string()).default([]),
+    attributes: yup.array(productAttributeValueSchema).required(),
+    images: yup.array().of(yup.string().defined()).optional(),
   });
 
-  const schema = yup.object({
+  // ✅ Schema chính
+  const schema: yup.ObjectSchema<FormData> = yup.object({
     name: yup.string().required("The Title is required"),
     description: yup.string().required("The description is required"),
-    images: yup.array().of(yup.string().defined()).required(),
+    images: yup.array(yup.string().defined()).required("The images are required"),
     category: yup.string().required("The Category is required"),
     price: yup.number().required("The Price is required"),
     stock: yup.number().required("The Stock is required"),
-    variants: yup.array().of(productVariantSchema).default([]).required(),
-    attributes: yup
-      .array()
-      .of(
-        yup.object({
-          attribute: yup.string().required("The attribute is required"),
-          valueString: yup.string().optional(),
-          valueNumber: yup.number().optional(),
-          valueBoolean: yup.boolean().optional(),
-        }),
-      )
-      .default([])
-      .required(),
+    variants: yup.array(productVariantSchema).required(),
+    attributes: yup.array(productAttributeValueSchema).required(),
   });
+
   const methods = useForm<FormData>({
-    resolver: yupResolver(schema) as any,
+    resolver: yupResolver(schema),
     defaultValues: {
       name: "",
       description: "",
@@ -219,6 +209,29 @@ const ProductForm = (props: TPropProductForm) => {
         }))
       : undefined,
   }));
+
+  const watchName = useWatch({ control, name: "name" });
+  const watchVariants = useWatch({ control, name: "variants" });
+
+  // 🔹 Tự động cập nhật SKU mỗi khi tên hoặc thuộc tính thay đổi
+  useEffect(() => {
+    if (!watchName || !watchVariants?.length) return;
+
+    // Sinh variants mới có SKU
+    const updatedVariants = watchVariants.map((variant) => {
+      const newSku = generateSKU(watchName, variant.attributes);
+      // Nếu SKU đã đúng -> không thay đổi
+      if (variant.sku === newSku) return variant;
+      return { ...variant, sku: newSku };
+    });
+
+    // ✅ Chỉ gọi setValue nếu có ít nhất 1 variant thay đổi SKU
+    const hasChange = updatedVariants.some((v, i) => v.sku !== watchVariants[i]?.sku);
+
+    if (hasChange) {
+      setValue("variants", updatedVariants, { shouldDirty: true });
+    }
+  }, [watchName, watchVariants, setValue]);
 
   return (
     <FormProvider {...methods}>
