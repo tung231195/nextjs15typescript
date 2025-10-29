@@ -121,7 +121,10 @@ const AttributeForm = (props: TPropAttributeForm) => {
       ...data,
       options:
         data.type === "enum"
-          ? data.options.map((opt) => opt.value.toString()) // ✅ convert object[] → string[]
+          ? data.options.map((opt) => ({
+              label: opt.label,
+              value: opt.value.toString(),
+            }))
           : [],
     };
 
