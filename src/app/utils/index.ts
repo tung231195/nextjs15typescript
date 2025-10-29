@@ -14,7 +14,7 @@ export function generateVariantsFromAttributes(attributes: AttributeType[]): Pro
   if (validAttributes.length === 0) return [];
 
   // ✅ Sinh tổ hợp các giá trị
-  const combinations = validAttributes.reduce<string[][]>(
+  const combinations = validAttributes.reduce<AttributeOption[][]>(
     (acc, attr) => acc.flatMap((a) => (attr.options ?? []).map((option) => [...a, option])),
     [[]],
   );
