@@ -2,13 +2,7 @@
 import { Grid, Box, TextField, IconButton, Typography, MenuItem, Button } from "@mui/material";
 import { Controller, useFieldArray, useFormContext, useWatch } from "react-hook-form";
 import { GridAddIcon, GridDeleteIcon } from "@mui/x-data-grid";
-
-type AttributeOption = {
-  _id: string;
-  name: string;
-  type: "string" | "number" | "boolean" | "enum";
-  options?: { label: string; value: string }[];
-};
+import { AttributeOption } from "@/app/types";
 
 type AttributeValueForm = {
   attribute: string; // _id của attribute
@@ -86,6 +80,7 @@ const ProductAttributeForm = ({ attributes }: AttFormProps) => {
                             <TextField
                               {...field}
                               type="number"
+                              value={field.value ?? ""} // 👈 luôn có default
                               label={selectedAttr.name}
                               fullWidth
                               size="small"
@@ -97,27 +92,12 @@ const ProductAttributeForm = ({ attributes }: AttFormProps) => {
                               {...field}
                               select
                               label={selectedAttr.name}
+                              value={field.value ?? ""} // 👈 luôn có default
                               fullWidth
                               size="small"
                             >
                               <MenuItem value="true">Yes</MenuItem>
                               <MenuItem value="false">No</MenuItem>
-                            </TextField>
-                          );
-                        case "enum":
-                          return (
-                            <TextField
-                              {...field}
-                              select
-                              label={selectedAttr.name}
-                              fullWidth
-                              size="small"
-                            >
-                              {selectedAttr.options?.map((opt) => (
-                                <MenuItem key={opt.value} value={opt.value}>
-                                  {opt.label}
-                                </MenuItem>
-                              ))}
                             </TextField>
                           );
                         default:

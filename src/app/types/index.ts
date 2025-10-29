@@ -55,7 +55,7 @@ export type AttributeType = {
   name: string;
   type: string;
   slug?: string;
-  options?: string[];
+  options?: { label: string; value: string }[];
   isFilterable: boolean;
   isVisible: boolean;
 };
@@ -63,10 +63,18 @@ export type Attribute = {
   name: string;
   type: string;
   slug?: string;
-  options?: string[];
+  options?: { label: string; value: string }[];
   isFilterable: boolean;
   isVisible: boolean;
 };
+export type AttributeEnum = "string" | "number" | "boolean" | "enum";
+export type AttributeOption = {
+  _id: string;
+  name: string;
+  type: AttributeEnum;
+  options?: { label: string; value: string }[];
+};
+
 // /types/product.ts
 export interface ProductAttributeValue {
   attribute: string; // Attribute._id
@@ -77,7 +85,7 @@ export interface ProductAttributeValue {
 
 export interface ProductVariant {
   _id?: string;
-  sku?: string;
+  sku: string;
   attributes: ProductAttributeValue[];
   price: number;
   stock: number;

@@ -2,14 +2,7 @@
 import { Grid, Box, TextField, IconButton, Typography, MenuItem, Button } from "@mui/material";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import { GridAddIcon, GridDeleteIcon } from "@mui/x-data-grid";
-import { ProductVariant } from "@/app/types";
-
-type AttributeOption = {
-  name: string;
-  _id: string;
-  type: string;
-  options: { value: string; label: string }[];
-};
+import { AttributeOption, ProductVariant } from "@/app/types";
 
 type VariantFormProps = {
   attributes: AttributeOption[];
@@ -74,17 +67,19 @@ const ProductVariantForm = ({ attributes }: VariantFormProps) => {
                 if (attr.type === "enum") {
                   console.log("attr", attr);
                   return (
-                    <Grid key={attr.name}>
+                    <Grid key={attrIndex}>
                       <Controller
                         name={`variants.${index}.attributes.${attrIndex}.valueString`}
                         control={control}
                         render={({ field }) => (
                           <TextField {...field} select label={attr.name} fullWidth size="small">
-                            {attr.options.map((opt) => (
-                              <MenuItem key={opt.value} value={opt.value}>
-                                {opt.label}
-                              </MenuItem>
-                            ))}
+                            {attr &&
+                              attr.options &&
+                              attr.options.map((opt) => (
+                                <MenuItem key={opt.value} value={opt.value}>
+                                  {opt.label}
+                                </MenuItem>
+                              ))}
                           </TextField>
                         )}
                       />
