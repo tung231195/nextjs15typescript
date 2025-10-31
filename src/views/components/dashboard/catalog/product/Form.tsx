@@ -1,8 +1,8 @@
 "use client";
-import { useForm, useWatch } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { Button } from "@mui/material";
+import { Box, Button, MenuItem, TextField, Typography } from "@mui/material";
 import CustomTextField from "@/app/components/custom/CustomTextField";
 import { useAuthContext } from "@/app/context/AuthContext";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,6 +13,7 @@ import { getProductService } from "@/app/services/productService";
 import {
   AttributeEnum,
   AttributeOption,
+  DiscountType,
   ProductAttributeValue,
   ProductType,
   ProductVariant,
@@ -38,10 +39,15 @@ type TCateOption = { label: string; value: string };
 const ProductForm = (props: TPropProductForm) => {
   console.log("product data", props);
   //return <>Product Form Data</>;
+  const productTypeOptions = [
+    { label: "Simple", value: "simple" },
+    { label: "Variant", value: "variant" },
+  ];
   const [cateOptions, setCateOptions] = useState<TCateOption[]>([]);
   const attributes = useSelector((state: RootState) => state.attribute.attributes);
   const router = useRouter();
   const { handleClose, openModal } = props;
+  const [showVariant, setShowVariant] = useState<boolean>(false);
   const [product, setProduct] = useState<ProductType>();
   const dispatch = useDispatch<AppDispatch>();
   const categories = useSelector((state: RootState) => state.cate.categories);
@@ -63,10 +69,12 @@ const ProductForm = (props: TPropProductForm) => {
 
   type FormData = {
     name: string;
+    type: "simple" | "variant";
     description: string;
     images: string[];
     category: string;
     price: number;
+    discount: DiscountType;
     stock: number;
     variants: ProductVariant[];
     attributes: ProductAttributeValue[];
@@ -91,10 +99,15 @@ const ProductForm = (props: TPropProductForm) => {
   // ✅ Schema chính
   const schema: yup.ObjectSchema<FormData> = yup.object({
     name: yup.string().required("The Title is required"),
+    type: yup.mixed<"simple" | "variant">().oneOf(["simple", "variant"]).required(),
     description: yup.string().required("The description is required"),
     images: yup.array(yup.string().defined()).required("The images are required"),
     category: yup.string().required("The Category is required"),
     price: yup.number().required("The Price is required"),
+    discount: yup.object({
+      type: yup.mixed<"percent" | "amount">().oneOf(["percent", "amount"]).required(),
+      value: yup.number().min(0).required(),
+    }),
     stock: yup.number().required("The Stock is required"),
     variants: yup.array(productVariantSchema).required(),
     attributes: yup.array(productAttributeValueSchema).required(),
@@ -104,8 +117,10 @@ const ProductForm = (props: TPropProductForm) => {
     resolver: yupResolver(schema),
     defaultValues: {
       name: "",
+      type: "simple",
       description: "",
       images: [],
+      discount: { type: "amount", value: 0 },
       category: "",
       price: 0,
       stock: 0,
@@ -135,15 +150,19 @@ const ProductForm = (props: TPropProductForm) => {
   }, [openModal.id, fetchProductByIdCallBack]);
 
   useEffect(() => {
-    console.log("product options", product);
     if (!product) return;
     if (openModal.id) {
+      const cat = product.category;
+      const categoryId = typeof cat === "object" && cat !== null ? cat._id : cat;
+      console.log("product edit", product);
       reset({
         name: product?.name ?? "",
+        type: product?.type ?? "",
         description: product?.description ?? "",
         images: product?.images ?? [],
-        category: product?.category ?? "",
+        category: categoryId,
         price: product?.price ?? 0,
+        discount: product.discount,
         stock: product?.stock ?? 0,
         variants: product?.variants ?? [],
         attributes: product?.attributes ?? [],
@@ -156,6 +175,7 @@ const ProductForm = (props: TPropProductForm) => {
         stock: 0,
         category: "",
         price: 0,
+        discount: { type: "amount", value: 0 },
         attributes: [],
         variants: [
           {
@@ -211,7 +231,32 @@ const ProductForm = (props: TPropProductForm) => {
   }));
 
   const watchName = useWatch({ control, name: "name" });
+  const watchProductType = useWatch({ control, name: "type" });
+  const watchPrice = useWatch({ control, name: "price" });
+  const watchDicount = useWatch({ control, name: "discount" });
   const watchVariants = useWatch({ control, name: "variants" });
+  const [finalPrice, setFinalPrice] = useState<number>(0);
+
+  useEffect(() => {
+    console.log("watch", watchDicount, watchPrice);
+    if (!watchProductType) return;
+    if (watchProductType === "simple") {
+      setShowVariant(false);
+    } else {
+      setShowVariant(true);
+    }
+  }, [watchProductType]);
+
+  useEffect(() => {
+    console.log("watch", watchDicount, watchPrice);
+    if (!watchPrice || !watchDicount) return;
+    if (watchDicount.type === "amount") {
+      setFinalPrice(watchPrice - watchDicount.value);
+    } else {
+      console.log("watch percent");
+      setFinalPrice(watchPrice - watchDicount.value * (watchPrice / 100));
+    }
+  }, [watchDicount, watchPrice]);
 
   // 🔹 Tự động cập nhật SKU mỗi khi tên hoặc thuộc tính thay đổi
   useEffect(() => {
@@ -236,6 +281,12 @@ const ProductForm = (props: TPropProductForm) => {
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>
+        <CustomSelectField<FormData>
+          name="type"
+          control={control}
+          label="Type"
+          options={productTypeOptions}
+        />
         <CustomTextField<FormData>
           name="name"
           label="Name"
@@ -258,6 +309,39 @@ const ProductForm = (props: TPropProductForm) => {
           fullWidth
           control={control}
         />
+        <Controller
+          name="discount.type"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              select
+              label="Discount Type"
+              fullWidth
+              margin="normal"
+              error={!!errors.discount?.type}
+              helperText={errors.discount?.type?.message}
+            >
+              <MenuItem value="percent">Percent (%)</MenuItem>
+              <MenuItem value="amount">Amount</MenuItem>
+            </TextField>
+          )}
+        />
+        <CustomTextField<FormData>
+          name="discount.value"
+          label="Discount"
+          variant="outlined"
+          error={!!errors.discount}
+          fullWidth
+          control={control}
+        />
+        {/* Hiển thị giá sau giảm */}
+        <Box sx={{ mt: 2 }}>
+          <Typography variant="body1">
+            💰 Final Price: <strong>{finalPrice > 0 ? finalPrice.toFixed(2) : 0}</strong>
+          </Typography>
+        </Box>
+
         <CustomTextField<FormData>
           name="stock"
           label="Stock"
@@ -268,11 +352,14 @@ const ProductForm = (props: TPropProductForm) => {
         />
 
         <ProductAttributeForm attributes={attributeOptions} />
-        <Button onClick={onGenerateVariants} variant="outlined">
-          Generate Variants
-        </Button>
-        <ProductVariantForm attributes={attributeOptions} />
-
+        {showVariant && (
+          <>
+            <Button onClick={onGenerateVariants} variant="outlined">
+              Generate Variants
+            </Button>
+            <ProductVariantForm attributes={attributeOptions} />
+          </>
+        )}
         <CustomRichEditor<FormData>
           name="description"
           control={control}

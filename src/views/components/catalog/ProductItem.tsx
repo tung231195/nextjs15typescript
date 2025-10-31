@@ -28,6 +28,8 @@ const ProductItem = ({ product }: TPropProductItem) => {
   const handleProductPage = (id: string) => {
     router.push(`/catalog/product/${id}`);
   };
+  const isSale = product && product.discount?.value > 0;
+  console.log("product", product);
   return (
     <MotionCard
       whileHover={{ scale: 1.03 }}
@@ -50,17 +52,37 @@ const ProductItem = ({ product }: TPropProductItem) => {
         image={product.images?.[0] || ""}
         title={product.name}
       />
-      <Chip label={"10%"} color="error" sx={{ position: "absolute", top: 10, left: 0 }} />
+      {isSale && (
+        <Chip
+          label={
+            product.discount.type === "percent"
+              ? `-${product.discount?.value}%`
+              : `-${product.discount?.value}$`
+          }
+          color="error"
+          sx={{ position: "absolute", top: 10, left: 0 }}
+        />
+      )}
       <Chip label={"New"} color="primary" sx={{ position: "absolute", top: 10, right: 0 }} />
-      <CardContent>
+      <CardContent sx={{ textAlign: "center" }}>
         <Typography gutterBottom variant="h6" fontWeight={600}>
           {product.name}
         </Typography>
-        <Typography variant="body2" color="text.secondary" noWrap>
+        <Box sx={{ display: "flex", gap: 1, justifyContent: "center" }}>
+          <Typography
+            sx={{ textDecoration: isSale ? "line-through" : "none" }}
+            variant="subtitle1"
+            fontWeight={700}
+            color="primary"
+          >
+            ${product.price.toFixed(2)}
+          </Typography>
+          <Typography variant="subtitle1" fontWeight={700} color="error">
+            {product.finalPrice}
+          </Typography>
+        </Box>
+        <Typography variant="body2" color="text.secondary" noWrap sx={{ mt: 1 }}>
           {product.description}
-        </Typography>
-        <Typography variant="subtitle1" fontWeight={700} color="primary">
-          ${product.price}
         </Typography>
       </CardContent>
 

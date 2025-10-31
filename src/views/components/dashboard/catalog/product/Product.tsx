@@ -5,7 +5,7 @@ import CustomModal from "@/app/components/custom/CustomModal";
 import { AppDispatch, RootState } from "@/app/store";
 import { deleteProduct, fetchProducts } from "@/app/store/actions/product";
 import { ProductType } from "@/app/types";
-import { Box, Button, CardMedia } from "@mui/material";
+import { Box, Button, CardMedia, Typography } from "@mui/material";
 import { GridColDef, GridRenderCellParams, GridTreeNodeWithRender } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -76,6 +76,31 @@ const Product = () => {
     { field: "slug", headerName: "Slug", width: 150, editable: true },
     { field: "type", headerName: "Type", width: 150, editable: true },
     {
+      field: "category",
+      headerName: "Category",
+      width: 150,
+      editable: true,
+      renderCell: (params) => {
+        const cat = params.row.category;
+        const categoryName = typeof cat === "object" && cat !== null ? cat.name : cat;
+
+        return <Typography>{categoryName || "—"}</Typography>;
+      },
+    },
+    { field: "price", headerName: "Price", width: 150, editable: true },
+    { field: "finalPrice", headerName: "Final Price", width: 150, editable: true },
+    {
+      field: "discount",
+      headerName: "Discount",
+      width: 150,
+      editable: true,
+      renderCell: (params) => {
+        return <Typography>{params.row?.discount ? params.row.discount.value : "0"} </Typography>;
+      },
+    },
+    { field: "stock", headerName: "stock", width: 150, editable: true },
+
+    {
       field: "actions",
       headerName: "Actions",
       width: 180,
@@ -91,9 +116,9 @@ const Product = () => {
   ];
 
   return (
-    <Box>
+    <Box sx={{ flexGrow: 1 }}>
       <Button onClick={() => setOpenModal({ open: true, id: "" })}>Add New Product</Button>
-      <CustomDataGrid rows={rows} columns={columns} pageSize={5} />
+      <CustomDataGrid rows={rows} columns={columns} pageSize={15} />
       {openModal && (
         <CustomModal
           open={openModal.open}

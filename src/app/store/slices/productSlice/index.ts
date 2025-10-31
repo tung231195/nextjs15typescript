@@ -53,7 +53,7 @@ const productSlice = createSlice({
         state.error = action.error.message ?? "Failed to fetch products";
       })
 
-      // add product
+      // update product
       .addCase(updateProduct.pending, (state) => {
         state.loading = true;
         state.error = null;
