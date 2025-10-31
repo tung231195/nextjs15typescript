@@ -6,6 +6,7 @@ import BlogList from "@/views/components/blogs/BlogList";
 import ProductList from "@/views/components/catalog/ProductList";
 import { Divider } from "@mui/material";
 import { getProductsService } from "@/app/services/productService";
+import ProductCountDown from "@/views/components/catalog/ProductCountDown";
 
 export const metadata = {
   title: "Hướng dẫn SEO Next.js: Meta, Open Graph & App Router | MyWebsite",
@@ -36,6 +37,7 @@ export default async function IndexPage({ params }: TPageProps) {
   console.log("product list data", productList);
   return (
     <PageLayout title={t("title")}>
+      <ProductCountDown productSale={productList} />
       <ProductList products={productList} />
       <Divider sx={{ mt: 2 }} />
       <BlogList />

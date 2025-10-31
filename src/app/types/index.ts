@@ -91,13 +91,20 @@ export interface ProductVariant {
   stock: number;
   images?: string[];
 }
+export type DiscountType = {
+  type: "percent" | "amount";
+  value: number;
+};
 export type ProductType = {
   _id: string;
   name: string;
+  type: "simple" | "variant";
   description: string;
   images: string[] | undefined;
   price: number;
-  category: string;
+  discount: DiscountType;
+  finalPrice?: number;
+  category: string | CategoryType;
   stock: number;
   attributes: ProductAttributeValue[];
   variants: ProductVariant[];
@@ -108,6 +115,8 @@ export type Product = {
   description: string;
   images: string[];
   price: number;
+  discount: DiscountType;
+  finalPrice?: number;
   category: string;
   stock: number;
   attributes: ProductAttributeValue[];
