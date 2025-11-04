@@ -5,8 +5,12 @@ import PageLayout from "@/app/components/PageLayout";
 import BlogList from "@/views/components/blogs/BlogList";
 import ProductList from "@/views/components/catalog/ProductList";
 import { Divider } from "@mui/material";
-import { getProductsService } from "@/app/services/productService";
+import { getProductsSaleService, getProductsService } from "@/app/services/productService";
 import ProductCountDown from "@/views/components/catalog/ProductCountDown";
+import ProductsByCategory from "@/views/components/catalog/ProductsByCategory";
+import { getCategoriesService } from "@/app/services/categoryService";
+import { getSlideshowsService } from "@/app/services/slideshowService";
+import Slideshows from "@/views/components/slideshow/Slideshows";
 
 export const metadata = {
   title: "Hướng dẫn SEO Next.js: Meta, Open Graph & App Router | MyWebsite",
@@ -34,10 +38,15 @@ export default async function IndexPage({ params }: TPageProps) {
 
   const t = await getTranslations("IndexPage");
   const productList = await getProductsService();
-  console.log("product list data", productList);
+  const productSale = await getProductsSaleService();
+  const categories = await getCategoriesService();
+  const slideshows = await getSlideshowsService();
+
   return (
     <PageLayout title={t("title")}>
-      <ProductCountDown productSale={productList} />
+      <Slideshows slideshows={slideshows} />
+      <ProductCountDown productSale={productSale} />
+      <ProductsByCategory categories={categories} />
       <ProductList products={productList} />
       <Divider sx={{ mt: 2 }} />
       <BlogList />

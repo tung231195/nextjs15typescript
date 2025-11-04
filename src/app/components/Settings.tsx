@@ -5,6 +5,8 @@ import MenuItem from "@mui/material/MenuItem";
 import Fade from "@mui/material/Fade";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
+import { useAuthContext } from "../context/AuthContext";
+import { Typography } from "@mui/material";
 
 export default function Settings() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -15,7 +17,7 @@ export default function Settings() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
+  const { user } = useAuthContext();
   return (
     <div>
       <Button
@@ -40,10 +42,14 @@ export default function Settings() {
         open={open}
         onClose={handleClose}
       >
+        <MenuItem> {user && <Typography variant="button">{user.email}</Typography>}</MenuItem>
         <MenuItem onClick={handleClose}>Profile</MenuItem>
         <MenuItem onClick={handleClose}>My account</MenuItem>
         <MenuItem onClick={handleClose}>
           <Link href="/login">Login</Link>
+        </MenuItem>
+        <MenuItem onClick={handleClose}>
+          <Link href="/dashboard">Dashboard</Link>
         </MenuItem>
       </Menu>
     </div>

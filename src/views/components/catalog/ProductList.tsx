@@ -8,12 +8,7 @@ type TPropProductList = {
   products: ProductType[];
 };
 const ProductList = (props: TPropProductList) => {
-  //const products = useSelector((state: RootState) => state.product.products);
   const { products } = props;
-  // const dispatch = useDispatch<AppDispatch>();
-  // useEffect(() => {
-  //   dispatch(fetchProducts());
-  // }, [dispatch]);
   return (
     <>
       <Typography variant="h6" fontWeight={600}>

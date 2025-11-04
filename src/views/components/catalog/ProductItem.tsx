@@ -1,3 +1,4 @@
+"use client";
 import { CartItem, ProductType } from "@/app/types";
 import { Icon } from "@iconify/react";
 import { motion } from "framer-motion";

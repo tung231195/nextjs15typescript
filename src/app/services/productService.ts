@@ -18,6 +18,37 @@ const getProductsService = async () => {
   //return login;
 };
 
+export const getProductsCategoryService = async (categoryId: string) => {
+  try {
+    const res = await customAxios.get(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/products/category/${categoryId}`,
+    );
+    return res.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error("Error fetching products by category:", error.message);
+    } else {
+      console.error("Unknown error:", error);
+    }
+    return null; // tránh undefined
+  }
+};
+
+/** get products Sale */
+const getProductsSaleService = async () => {
+  try {
+    const products = await customAxios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/products/sale`);
+    return products.data;
+  } catch (e: unknown) {
+    if (e instanceof Error) {
+      console.log(e.message);
+    } else {
+      console.log("Unknown error", e);
+    }
+  }
+
+  //return login;
+};
 /** get product */
 const getProductService = async (id: string) => {
   try {
@@ -88,4 +119,5 @@ export {
   updateProductService,
   deleteProductService,
   getProductService,
+  getProductsSaleService,
 };
