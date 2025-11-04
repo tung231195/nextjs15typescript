@@ -117,19 +117,19 @@ export default async function ProductPage({ params }: TProductProps) {
         "@type": "ListItem",
         position: 1,
         name: "Trang chủ",
-        item: "https://nextjs15typescript.vercel.app/",
+        item: process.env.NEXT_PUBLIC_BASE_URL,
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Danh mục",
-        item: "https://nextjs15typescript.vercel.app/catalog",
+        item: `${process.env.NEXT_PUBLIC_BASE_URL}/catalog`,
       },
       {
         "@type": "ListItem",
         position: 3,
         name: product.name,
-        item: `https://nextjs15typescript.vercel.app/catalog/product/${id}`,
+        item: `${process.env.NEXT_PUBLIC_BASE_URL}/catalog/product/${id}`,
       },
     ],
   };

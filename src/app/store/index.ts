@@ -7,7 +7,7 @@ import productReducer from "./slices/productSlice";
 import cartReducer from "./slices/cartSlice";
 import deliveryReducer from "./slices/deliverySlice";
 import paymentMethodReducer from "./slices/paymentSlice";
-
+import slideshowReducer from "./slices/slideshowSlice";
 import synCarts from "./middleware/cart";
 
 export const store = configureStore({
@@ -19,6 +19,7 @@ export const store = configureStore({
     cart: cartReducer,
     paymentMethod: paymentMethodReducer,
     delivery: deliveryReducer,
+    slideshow: slideshowReducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(synCarts), // thêm vào cuối
 });

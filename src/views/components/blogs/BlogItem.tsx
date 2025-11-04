@@ -16,6 +16,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Like, PostType } from "@/app/types";
 import { useAuthContext } from "@/app/context/AuthContext";
 import Link from "next/link";
+import { Box } from "@mui/material";
 type TPropBlogItem = {
   hanldeLike: (payload: Like) => Promise<void>;
   liked: boolean;
@@ -47,13 +48,15 @@ export default function BlogItem({ post, hanldeLike, liked }: TPropBlogItem) {
           {post.content}
         </Typography>
       </CardContent>
-      <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
-        <IconButton aria-label="share">
-          <ShareIcon />
-        </IconButton>
+      <CardActions disableSpacing sx={{ display: "flex", justifyContent: "space-between" }}>
+        <Box>
+          <IconButton aria-label="add to favorites">
+            <FavoriteIcon />
+          </IconButton>
+          <IconButton aria-label="share">
+            <ShareIcon />
+          </IconButton>
+        </Box>
         <IconButton
           aria-label="like"
           onClick={() => hanldeLike({ user: user?._id as string, post: post._id })}

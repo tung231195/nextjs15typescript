@@ -20,6 +20,21 @@ export interface PostCreate {
   content: string;
 }
 
+export type SlideshowType = {
+  _id: string;
+  title: string;
+  description: string;
+  image: string[];
+  status: "enable" | "disabled";
+};
+
+export interface SlideshowCreate {
+  title: string;
+  description: string;
+  image: string[];
+  status: "enable" | "disabled";
+}
+
 export type User = {
   _id: string;
   name: string;
@@ -103,6 +118,7 @@ export type ProductType = {
   images: string[] | undefined;
   price: number;
   discount: DiscountType;
+  endDate?: Date;
   finalPrice?: number;
   category: string | CategoryType;
   stock: number;
@@ -116,6 +132,7 @@ export type Product = {
   images: string[];
   price: number;
   discount: DiscountType;
+  endDate?: Date;
   finalPrice?: number;
   category: string;
   stock: number;

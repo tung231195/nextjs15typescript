@@ -29,6 +29,7 @@ import ProductVariantForm from "./ProductVariant";
 import { FormProvider } from "react-hook-form";
 import { generateSKU, generateVariantsFromAttributes } from "@/app/utils";
 import ProductAttributeForm from "./ProductAttribute";
+import CustomDatePicker from "@/app/components/custom/CustomDatePicker";
 
 type TPropProductForm = {
   handleClose: () => void;
@@ -47,6 +48,7 @@ const ProductForm = (props: TPropProductForm) => {
   const attributes = useSelector((state: RootState) => state.attribute.attributes);
   const router = useRouter();
   const { handleClose, openModal } = props;
+  const [date, setDate] = useState<Date | null>(null);
   const [showVariant, setShowVariant] = useState<boolean>(false);
   const [product, setProduct] = useState<ProductType>();
   const dispatch = useDispatch<AppDispatch>();
@@ -75,6 +77,7 @@ const ProductForm = (props: TPropProductForm) => {
     category: string;
     price: number;
     discount: DiscountType;
+    endDate: Date;
     stock: number;
     variants: ProductVariant[];
     attributes: ProductAttributeValue[];
@@ -108,6 +111,7 @@ const ProductForm = (props: TPropProductForm) => {
       type: yup.mixed<"percent" | "amount">().oneOf(["percent", "amount"]).required(),
       value: yup.number().min(0).required(),
     }),
+    endDate: yup.date().required("").default(new Date()),
     stock: yup.number().required("The Stock is required"),
     variants: yup.array(productVariantSchema).required(),
     attributes: yup.array(productAttributeValueSchema).required(),
@@ -163,6 +167,7 @@ const ProductForm = (props: TPropProductForm) => {
         category: categoryId,
         price: product?.price ?? 0,
         discount: product.discount,
+        endDate: product.endDate,
         stock: product?.stock ?? 0,
         variants: product?.variants ?? [],
         attributes: product?.attributes ?? [],
@@ -193,7 +198,9 @@ const ProductForm = (props: TPropProductForm) => {
   /** context  */
   const { user } = useAuthContext();
   const onSubmit = async (data: FormData) => {
-    console.log("data product", data);
+    console.log("data product edit", data, date);
+    if (date) setValue("endDate", date);
+    console.log("data  product edit after", data, date);
     if (!user) {
       router.push("/login");
       return;
@@ -325,6 +332,19 @@ const ProductForm = (props: TPropProductForm) => {
               <MenuItem value="percent">Percent (%)</MenuItem>
               <MenuItem value="amount">Amount</MenuItem>
             </TextField>
+          )}
+        />
+
+        <Controller
+          name="endDate"
+          control={control}
+          render={({ field }) => (
+            <CustomDatePicker
+              label="End date"
+              value={field.value ?? null}
+              onChange={(date) => field.onChange(date)}
+              minDate={new Date()}
+            />
           )}
         />
         <CustomTextField<FormData>

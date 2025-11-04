@@ -2,3 +2,6 @@
 @import "swiper/css/navigation";
 @import "swiper/css/pagination";
 @import "swiper/css/autoplay";
+.MuiPickersPopper-root {
+  z-index: 9999 !important;
+}
