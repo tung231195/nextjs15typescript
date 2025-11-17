@@ -1,4 +1,4 @@
-import { AttributeType, ProductAttributeValue, ProductVariant } from "@/app/types";
+import { AttributeType, ProductAttributeValue, ProductType, ProductVariant } from "@/app/types";
 export const convertFileToBase64 = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -74,3 +74,30 @@ export function generateSKU(
   // Gộp lại -> "T-SHIRT-RED-M"
   return [base, ...attrValues.filter(Boolean)].join("-");
 }
+
+export const groupColorBySize = (
+  product: ProductType,
+  ATTRIBUTE_COLOR_ID: string,
+  ATTRIBUTE_SIZE_ID: string,
+) => {
+  const colorMap: Record<string, Set<string>> = {};
+  if (!product || !product.variants) return [];
+  product.variants?.forEach((variant) => {
+    const colorAttr = variant.attributes?.find((a) => a.attribute === ATTRIBUTE_COLOR_ID);
+    const sizeAttr = variant.attributes?.find((a) => a.attribute === ATTRIBUTE_SIZE_ID);
+
+    if (!colorAttr || !sizeAttr) return;
+
+    const color = colorAttr.valueString as string;
+    const size = sizeAttr.valueString as string;
+
+    if (!colorMap[color]) colorMap[color] = new Set();
+    colorMap[color].add(size);
+  });
+
+  const variantAtt = Object.entries(colorMap).map(([color, sizes]) => ({
+    color,
+    sizes: Array.from(sizes),
+  }));
+  return variantAtt;
+};

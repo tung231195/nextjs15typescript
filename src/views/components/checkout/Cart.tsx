@@ -11,7 +11,6 @@ export default function Cart() {
 
   const { cartItems } = useCart();
   /*** hanldle  */
-  console.log("cart data", cartItems);
 
   return (
     <Box sx={{ p: 3 }}>

@@ -10,7 +10,6 @@ type VariantFormProps = {
 
 const ProductVariantForm = ({ attributes }: VariantFormProps) => {
   const variantAttr = attributes.filter((a) => a.type === "enum");
-  console.log(" attribute variant", variantAttr);
   const { control } = useFormContext();
   const { fields, append, remove } = useFieldArray({
     control,
@@ -65,7 +64,6 @@ const ProductVariantForm = ({ attributes }: VariantFormProps) => {
             <Grid container spacing={2}>
               {variantAttr.map((attr, attrIndex) => {
                 if (attr.type === "enum") {
-                  console.log("attr", attr);
                   return (
                     <Grid key={attrIndex}>
                       <Controller

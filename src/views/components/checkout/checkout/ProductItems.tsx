@@ -41,7 +41,7 @@ const ProductItems = ({ cartItems }: TPropProductItems) => {
               p={2}
             >
               <Grid size={{ md: 6, sm: 12 }}>
-                <Box sx={{ display: "flex", alignItems: "center" }}>
+                <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                   <CardMedia sx={{ height: 80, width: 80 }} image={product.image} />
                   <Typography variant="h6" gutterBottom>
                     {product.name}

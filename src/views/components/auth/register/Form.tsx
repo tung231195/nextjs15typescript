@@ -4,8 +4,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Box, Button } from "@mui/material";
 import CustomTextField from "@/app/components/custom/CustomTextField";
+import { registerService } from "@/app/services/authService";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const RegisterForm = () => {
+  const route = useRouter();
   type FormData = {
     name: string;
     password: string;
@@ -20,7 +24,6 @@ const RegisterForm = () => {
   const {
     control,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm<FormData>({
     resolver: yupResolver(schema),
@@ -31,11 +34,10 @@ const RegisterForm = () => {
     },
   });
 
-  const onSubmit = (data: FormData) => {
-    console.log("data submit", data);
-    reset({
-      email: "q@gmail.com",
-    });
+  const onSubmit = async (data: FormData) => {
+    const user = await registerService(data);
+    if (user) toast.success("You have register succesfully");
+    route.push("/login");
   };
 
   return (
@@ -82,7 +84,7 @@ const RegisterForm = () => {
             control={control}
           />
           <Button fullWidth sx={{ mt: 2, float: "right" }} type="submit" variant="contained">
-            Login
+            Register
           </Button>
           <Button fullWidth sx={{ mt: 2, float: "right" }} variant="outlined">
             Login with google

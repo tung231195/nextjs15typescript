@@ -66,7 +66,6 @@ const DeliveryMethodForm = (props: TPropDeliveryMethodForm) => {
   const fetchDeliveryMethodByIdCallBack = useCallback(async () => {
     if (openModal.id) {
       const res = await getDeliveryMethodService(openModal.id);
-      console.log("res edit attt", res);
       setDeliveryMethod(res);
     }
   }, [openModal.id]);

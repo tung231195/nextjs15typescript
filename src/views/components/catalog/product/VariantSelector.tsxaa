@@ -15,20 +15,17 @@ export default function VariantSelector({ product, onVariantChange }: Props) {
 
   const handleSelect = (attrName: string, value: string) => {
     const updated = { ...selected, [attrName]: value };
-    console.log("attrname", attrName, "v", value, updated);
+
     setSelected(updated);
 
     // Tìm variant khớp với lựa chọn
     const matched =
       product &&
       product.variants.find((v) => {
-        console.log("vvvvvvvvv", v);
         return v.attributes.every((attr) => updated[attr.attribute] === attr.valueString);
       });
-    console.log("match", matched);
     onVariantChange(matched || null);
   };
-  console.log("product data", product);
   // Nhóm các option theo attribute
   const attributeOptions =
     product &&
@@ -43,7 +40,7 @@ export default function VariantSelector({ product, onVariantChange }: Props) {
       },
       {} as Record<string, Set<string>>,
     );
-  console.log("attributeOptions", attributeOptions);
+
   return (
     <Box sx={{ mt: 2 }}>
       {attributeOptions &&

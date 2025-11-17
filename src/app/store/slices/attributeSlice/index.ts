@@ -79,7 +79,6 @@ const attributeSlice = createSlice({
         state.error = null;
       })
       .addCase(deleteAttribute.fulfilled, (state, action: PayloadAction<string>) => {
-        console.log("delete action", action.payload, state.attributes);
         state.loading = false;
         state.attributes = state.attributes.filter((p) => p._id !== action.payload);
       })

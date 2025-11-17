@@ -40,7 +40,28 @@ const Post = () => {
       headerName: "User",
       width: 150,
       editable: true,
-      renderCell: (params) => <span>{params.row.user}</span>,
+      renderCell: (params) => (
+        <span>{typeof params.row.user === "object" ? params.row.user.name : "Guest"}</span>
+      ),
+    },
+    {
+      field: "image",
+      headerName: "Image",
+      width: 150,
+      renderCell: (params) => (
+        <Box
+          component="img"
+          src={Array.isArray(params.row.images) ? params.row.images[0] : params.row.images}
+          alt={params.row.title}
+          sx={{
+            width: 100,
+            height: 60,
+            borderRadius: 2,
+            objectFit: "cover",
+            boxShadow: 2,
+          }}
+        />
+      ),
     },
     { field: "title", headerName: "Title", width: 150, editable: true },
     { field: "content", headerName: "Content", width: 110, editable: true },

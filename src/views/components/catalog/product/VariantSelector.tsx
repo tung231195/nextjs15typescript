@@ -63,17 +63,24 @@ const VariantSelector = ({ product, onVariantChange }: TPropVariant) => {
             key={color}
             variant={selectedColor === color ? "contained" : "outlined"}
             onClick={() => setSelectedColor((prev) => (prev === color ? null : color))}
-          >
-            {color}
-          </Button>
+            sx={{
+              border: "1px solid #ddd",
+              display: "block",
+              borderRadius: "50%",
+              textTransform: "capitalize",
+              zIndex: 9999,
+              background: color,
+              width: "30px",
+              height: "30px",
+              minWidth: "30px",
+            }}
+          ></Button>
         ))}
       </Box>
 
       {selectedColor && (
         <Box>
-          <Typography fontWeight="bold" sx={{ mt: 2 }}>
-            Size ({selectedColor}):
-          </Typography>
+          <Typography fontWeight="bold">Size ({selectedColor}):</Typography>
           <Box sx={{ display: "flex", gap: 1, mt: 1 }}>
             {variantData
               .find((v) => v.color === selectedColor)

@@ -41,12 +41,12 @@ export default function CartSummary() {
     //   headers: { "Content-Type": "application/json" },
     //   body: JSON.stringify({ amount: 1, orderId: Date.now() }),
     // });
-    const res = await customAxios.post("https://nodejs2015typescript.onrender.com/api/payment", {
+    const res = await customAxios.post(`${process.env.NEXT_PUBLIC_SOCKET_URL}/api/payment`, {
       amount: 1000,
       orderId: Date.now(),
     });
     const data = await res.data;
-    console.log("data vn", data);
+
     window.location.href = data.paymentUrl; // redirect sang trang thanh toán VNPAY
   };
   return (

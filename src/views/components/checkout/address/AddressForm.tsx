@@ -30,7 +30,6 @@ const AddressForm = ({
   showAddressForm,
   setAddressDefault,
 }: TPropAddressForm) => {
-  console.log("kkkkkkkkkk", addressUpdate);
   const [cities, setCities] = useState<IOption[]>([]);
   const [districts, setDistricts] = useState<IOption[]>([]);
   const [wards, setWards] = useState<IOption[]>([]);
@@ -198,7 +197,6 @@ const AddressForm = ({
     }
   }, [addressUpdate]);
 
-  console.log("addressUpdate", addressUpdate, selectedCity, selectedDistrict);
   return (
     <>
       <Typography variant="h6">Địa chỉ mới (dùng thông tin trước sáp nhập)</Typography>

@@ -1,7 +1,10 @@
 import { AxiosError } from "axios";
-import { ProductType, Product } from "../types";
+import { ProductType, Product, ATTRIBUTE_COLOR_ID, ATTRIBUTE_SIZE_ID } from "../types";
 import customAxios from "../utils/customAxious";
-
+export type AttributeVariant = {
+  attributeId: typeof ATTRIBUTE_COLOR_ID | typeof ATTRIBUTE_SIZE_ID;
+  valueString: string;
+};
 /** get products */
 const getProductsService = async () => {
   try {
@@ -34,10 +37,64 @@ export const getProductsCategoryService = async (categoryId: string) => {
   }
 };
 
+/** get categories */
+export const getCategoryProducts = async ({
+  slug,
+  minPrice,
+  maxPrice,
+  variants,
+}: {
+  slug: string;
+  minPrice?: number;
+  maxPrice?: number;
+  variants?: AttributeVariant[];
+}) => {
+  try {
+    const res = await customAxios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/catalog/${slug}`, {
+      params: { minPrice, maxPrice, variants: variants },
+    });
+    return res.data;
+  } catch (e: unknown) {
+    if (e instanceof Error) console.error(e.message);
+    else console.error("Unknown error", e);
+  }
+};
+
+export const getPriceRange = async (slug: string) => {
+  try {
+    const res = await customAxios.get(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/catalog/${slug}/price-range`,
+    );
+    return res.data;
+  } catch (e: unknown) {
+    if (e instanceof Error) console.error(e.message);
+    else console.error("Unknown error", e);
+  }
+};
+
 /** get products Sale */
 const getProductsSaleService = async () => {
   try {
     const products = await customAxios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/products/sale`);
+    return products.data;
+  } catch (e: unknown) {
+    if (e instanceof Error) {
+      console.log(e.message);
+    } else {
+      console.log("Unknown error", e);
+    }
+  }
+
+  //return login;
+};
+
+/** get products Relates */
+const getProductsRelate = async (id: string, category: string) => {
+  try {
+    const products = await customAxios.get(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/products/${id}/relate`,
+      { params: { category } },
+    );
     return products.data;
   } catch (e: unknown) {
     if (e instanceof Error) {
@@ -120,4 +177,5 @@ export {
   deleteProductService,
   getProductService,
   getProductsSaleService,
+  getProductsRelate,
 };

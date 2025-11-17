@@ -55,14 +55,14 @@ export default function CustomFileUploadField<T extends FieldValues>({
   };
 
   return (
-    <Box>
+    <Box sx={{ mt: 2 }}>
       {label && (
-        <Typography variant="subtitle2" sx={{ mb: 1 }}>
+        <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 600 }}>
           {label}
         </Typography>
       )}
 
-      <Button variant="outlined" component="label" startIcon={<ImageIcon />} sx={{ mb: 2 }}>
+      <Button variant="outlined" component="label" startIcon={<ImageIcon />} sx={{}}>
         Upload Image
         <input type="file" hidden multiple={multiple} accept="image/*" onChange={handleFiles} />
       </Button>

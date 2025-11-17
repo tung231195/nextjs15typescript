@@ -28,7 +28,7 @@ const PostDetail = (props: TPropPostDetail) => {
   const params = useParams();
   const { id } = params;
   const { user } = useAuthContext();
-  const { onEvent, emitEvent } = useSocket();
+  const { onEvent } = useSocket();
   // useEffect(() => {
   //   const fetchPost = async () => {
   //     const fetchPost = await getPostService(id as string);
@@ -41,7 +41,6 @@ const PostDetail = (props: TPropPostDetail) => {
     const fetchComments = async () => {
       const res = await getCommentsByPostService(id as string);
       if (res) {
-        console.log("list comments", res);
         setListComments(res);
       }
     };
@@ -55,19 +54,18 @@ const PostDetail = (props: TPropPostDetail) => {
     const offAdded = onEvent("comment.added", (msg: CommentType) => {
       setListComments((prev) => [...prev, msg]);
     });
-    emitEvent("join", user?._id);
+    // emitEvent("join", user?._id);
     // const offNotify = onEvent("comment.notify", (msg: CommentType) => {
     //   console.log("notify message", msg);
-    //   setNotify((prev) => [...prev, msg.user.email]);
+    //   //setNotify((prev) => [...prev, msg.user.email]);
     // });
 
     return () => {
       offAdded();
-      //offNotify();
+      // offNotify();
     };
   }, [onEvent]);
   const handleComment = async () => {
-    console.log("user comment", user);
     if (!comment || !user) {
       toast.error("the comment is empty");
       return;
@@ -75,7 +73,6 @@ const PostDetail = (props: TPropPostDetail) => {
     await hanldeCommentService({ user: user._id, content: comment, post: id as string });
     setComment("");
   };
-  console.log("post", post);
   return (
     <Box sx={{ margin: "20px auto", width: "100%" }}>
       <Card>
@@ -87,12 +84,10 @@ const PostDetail = (props: TPropPostDetail) => {
           alt="Paella dish"
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography gutterBottom variant="h5">
             {post?.title}
           </Typography>
-          <Typography gutterBottom variant="caption" component="div">
-            {post?.user}
-          </Typography>
+
           <Typography variant="body2" sx={{ color: "text.secondary" }}>
             {post?.content}
           </Typography>

@@ -36,7 +36,6 @@ const postSlice = createSlice({
         postItem.likesCount = postItem.likes.length;
         const findPostIndex = state.posts.findIndex((p) => p._id == post);
         state.posts[findPostIndex] = postItem;
-        console.log("post like", postItem, state.posts);
       }
     },
     updatePostUnLike: (

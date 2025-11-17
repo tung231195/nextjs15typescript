@@ -8,10 +8,13 @@ let socket: Socket | null = null;
 // 👉 Hàm khởi tạo socket (singleton)
 const getSocket = () => {
   if (!socket) {
-    socket = io(process.env.NEXT_PUBLIC_SOCKET_URL || "https://nodejs2015typescript.onrender.com", {
-      transports: ["websocket"],
-      autoConnect: false, // tránh kết nối sớm
-    });
+    socket = io(
+      process.env.NEXT_PUBLIC_BACKEND_URL || "https://nodejs2015typescript.onrender.com",
+      {
+        transports: ["websocket"],
+        autoConnect: false, // tránh kết nối sớm
+      },
+    );
   }
   return socket;
 };
@@ -50,8 +53,10 @@ export const useSocket = () => {
 
   // Tiện ích lắng nghe event
   const onEvent = <T>(event: string, callback: (msg: T) => void) => {
+    console.log("socket runt to on event", event);
     const handler = (msg: T) => callback(msg);
     socketRef.current?.on(event, handler);
+    console.log("socket runt to on event 2", event);
     return () => socketRef.current?.off(event, handler);
   };
 

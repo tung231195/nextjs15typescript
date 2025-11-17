@@ -13,7 +13,6 @@ const ShippingMethodForm = ({
   handleMethod,
   handleConfirmShippingMethod,
 }: TPropDelivery) => {
-  console.log("shippingMethods", shippingMethods);
   return (
     <>
       <Typography variant="body1">Chose Delivery Method</Typography>

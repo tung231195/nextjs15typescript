@@ -10,7 +10,6 @@ type ShareButtonsProps = {
 
 export default function ShareButtons({ slug, title }: ShareButtonsProps) {
   const url = `https://ideographic-nonmodificative-alfonso.ngrok-free.dev/en/blog/${slug}`;
-  console.log(" share url", url);
   const shareLinks = {
     facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
     twitter: `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`,

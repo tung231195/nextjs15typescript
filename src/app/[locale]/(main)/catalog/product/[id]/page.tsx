@@ -45,7 +45,6 @@ export default async function ProductPage({ params }: TProductProps) {
   const { id } = await params;
   // ✅ 3️⃣ Structured Data JSON-LD cho Google
   const product = await getProductService(id);
-  console.log("product data", product, id);
   const productSchema = {
     "@context": "https://schema.org/",
     "@type": "Product",

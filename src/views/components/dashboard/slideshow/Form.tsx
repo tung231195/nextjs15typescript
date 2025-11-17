@@ -84,7 +84,6 @@ const SlideshowForm = (props: TPropSlideshowForm) => {
   };
   const onSubmit = async (data: SlideshowCreate) => {
     data.description = stripHtml(data.description);
-    console.log("user data", user, data);
     if (!user) {
       router.push("/login");
       return;

@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
+import { styled, useTheme } from "@mui/material/styles";
 import {
   Box,
   CssBaseline,
@@ -23,49 +23,12 @@ import NavigationAdmin from "./NavigationAdmin";
 
 const drawerWidth = 240;
 
-const openedMixin = (theme: Theme): CSSObject => ({
-  width: drawerWidth,
-  transition: theme.transitions.create("width", {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.enteringScreen,
-  }),
-  overflowX: "hidden",
-});
-
-const closedMixin = (theme: Theme): CSSObject => ({
-  transition: theme.transitions.create("width", {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  overflowX: "hidden",
-  width: `calc(${theme.spacing(7)} + 1px)`,
-  [theme.breakpoints.up("sm")]: {
-    width: `calc(${theme.spacing(8)} + 1px)`,
-  },
-});
-
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "flex-end",
   padding: theme.spacing(0, 1),
   ...theme.mixins.toolbar,
-}));
-
-const Drawer = styled("div")<{ open: boolean }>(({ theme, open }) => ({
-  width: drawerWidth,
-  flexShrink: 0,
-  whiteSpace: "nowrap",
-  boxSizing: "border-box",
-  ...(open
-    ? {
-        ...openedMixin(theme),
-        "& .MuiDrawer-paper": openedMixin(theme),
-      }
-    : {
-        ...closedMixin(theme),
-        "& .MuiDrawer-paper": closedMixin(theme),
-      }),
 }));
 
 type SidebarItem = {
@@ -112,7 +75,7 @@ export default function MiniDrawer({ children }: TPropContentAdmin) {
       label: "Customers",
       icon: "lucide:users",
       children: [
-        { label: "All Customers", path: "/dashboard/customers" },
+        { label: "All Customers", path: "/dashboard/customer" },
         { label: "Groups", path: "/dashboard/customers/groups" },
         { label: "Reviews", path: "/dashboard/reviews" },
       ],
@@ -121,8 +84,8 @@ export default function MiniDrawer({ children }: TPropContentAdmin) {
       label: "Blog",
       icon: "lucide:file-text",
       children: [
-        { label: "Posts", path: "/dashboard/posts" },
-        { label: "Categories", path: "/dashboard/categories" },
+        { label: "Posts", path: "/dashboard/post" },
+        { label: "Categories", path: "/dashboard/post/categories" },
       ],
     },
     {

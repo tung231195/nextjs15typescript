@@ -39,7 +39,7 @@ type TPropsCustomTab = {
   categories: CategoryType[];
 };
 export default function CategoryProductTabPanel({ categories }: TPropsCustomTab) {
-  const [value, setValue] = React.useState(categories[1]._id);
+  const [value, setValue] = React.useState(categories[1]._id ?? "");
 
   const [products, setProducts] = React.useState<ProductType[]>([]);
   const [loading, setLoading] = React.useState(false);
@@ -90,7 +90,6 @@ export default function CategoryProductTabPanel({ categories }: TPropsCustomTab)
               <CircularProgress />
             ) : (
               <Box>
-                <h3>{c.name}</h3>
                 {products.length > 0 ? (
                   <ul>
                     <Swiper

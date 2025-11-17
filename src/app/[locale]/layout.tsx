@@ -12,7 +12,7 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
-export async function generateMetadata(props: Omit<LayoutProps<"/[locale]">, "children">) {
+export async function generateMetadata() {
   // const { locale } = await props.params;
 
   // const t = await getTranslations({

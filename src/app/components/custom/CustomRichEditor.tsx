@@ -48,7 +48,7 @@ export default function CustomRichEditor<T extends FieldValues>({
                 ["clean"],
               ],
             }}
-            style={{ minHeight: "200px", background: "white" }}
+            style={{ background: "white" }}
           />
         )}
       />

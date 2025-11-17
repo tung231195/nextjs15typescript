@@ -16,8 +16,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 
 //const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
-const NOTIF =
-  process.env.NEXT_PUBLIC_NOTIFICATION_URL || "https://nodejs2015typescript.onrender.com";
+const NOTIF = process.env.NEXT_PUBLIC_BACKEND_URL || "https://nodejs2015typescript.onrender.com";
 
 export default function BlogList() {
   const { user } = useAuthContext();
@@ -28,31 +27,34 @@ export default function BlogList() {
     dispatch(fetchPosts());
     s.on("connect", () => console.log("socket connected"));
     s.on("post.liked", (data) => {
-      console.log("pos like event", data);
       dispatch(updatePostLike(data));
     });
     s.on("post.unliked", (data) => {
-      console.log("un like event", data);
       dispatch(updatePostUnLike(data));
     });
+
+    return () => {
+      s.disconnect();
+    };
   }, [dispatch]);
 
-  console.log("post list", posts);
   const hanldeLike = async (payload: Like) => {
     if (!user) toast.error("You need to login to like");
     await hanldeLikeService(payload);
   };
   return (
     <Box mt={3}>
-      <Typography variant="h4">Blog List</Typography>
+      <Typography sx={{ padding: "25px 0" }} variant="h6">
+        Blog List
+      </Typography>
       <Grid container spacing={1} mt={0}>
         <Swiper
           modules={[Navigation, Pagination, Autoplay]}
           spaceBetween={20}
           slidesPerView={1}
           navigation
-          pagination={{ clickable: true }}
-          autoplay={{ delay: 3000, disableOnInteraction: false }}
+          pagination={false}
+          autoplay={{ delay: 300000, disableOnInteraction: false }}
           loop
           breakpoints={{
             320: { slidesPerView: 1 }, // mobile

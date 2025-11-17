@@ -1,4 +1,5 @@
-const CheckoutSuccess = () => {
-  return <>checout success</>;
-};
-export default CheckoutSuccess;
+"use client";
+
+export default function CheckoutSuccessPage() {
+  return <>checkout success page</>;
+}

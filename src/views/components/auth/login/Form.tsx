@@ -2,13 +2,14 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import CustomTextField from "@/app/components/custom/CustomTextField";
 import { useAuthContext } from "@/app/context/AuthContext";
 import { TParamsLogin } from "@/app/types";
 import { useRouter } from "next/navigation";
 import GoogleLoginButton from "./GoolgeSignInButton";
 import FacebookLoginButton from "./FacebookLoginButton";
+import Link from "next/link";
 
 const LoginForm = () => {
   type FormData = {
@@ -23,6 +24,7 @@ const LoginForm = () => {
   const {
     control,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<FormData>({
     resolver: yupResolver(schema),
@@ -36,9 +38,19 @@ const LoginForm = () => {
   const { login } = useAuthContext();
 
   const onSubmit = async (data: TParamsLogin) => {
-    console.log("data submit", data);
-    await login(data);
-    route.push("/");
+    const res = await login(data);
+    if (res.status !== "error") {
+      route.push("/");
+    } else {
+      setError("email", {
+        type: "manual",
+        message: res.message || "Email hoặc mật khẩu không đúng",
+      });
+      setError("password", {
+        type: "manual",
+        message: res.message || "Email hoặc mật khẩu không đúng",
+      });
+    }
   };
 
   return (
@@ -85,9 +97,35 @@ const LoginForm = () => {
           <Button fullWidth sx={{ mt: 2 }} type="submit" variant="contained">
             Login
           </Button>
+          <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+            <Typography variant="caption" sx={{ color: "warning.main" }}>
+              If you forgot the password, click{" "}
+              <Link href="/forgot" passHref>
+                <b>reset</b>
+              </Link>
+            </Typography>
+          </Box>
           <Box>
             <GoogleLoginButton />
             <FacebookLoginButton />
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              mt: 2,
+              flexDirection: "column",
+              alignContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Typography variant="caption" sx={{ color: "warning.main" }}>
+              If you dont have an account, click{" "}
+              <Link href="/register" passHref>
+                <b>register</b>
+              </Link>{" "}
+              to create it.
+            </Typography>
           </Box>
         </form>
       </Box>

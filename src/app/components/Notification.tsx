@@ -3,24 +3,41 @@ import NotificationsIcon from "@mui/icons-material/NotificationsNone";
 import { useEffect, useState } from "react";
 import { useSocket } from "../hooks/useSocket";
 import { Badge, Box, Divider, IconButton, Menu, MenuItem, Typography } from "@mui/material";
+import { useAuthContext } from "../context/AuthContext";
 interface CommentNotifyEvent {
   data: { user?: { email?: string } };
 }
-
+interface OrderNotifyEvent {
+  data: { user: string; message: string };
+}
 const Notifycations = () => {
+  const { user } = useAuthContext();
   const [notifications, setNotifications] = useState<string[]>([]);
-  const { onEvent } = useSocket();
+  const { onEvent, emitEvent } = useSocket();
   useEffect(() => {
     if (!onEvent) return;
+    if (user?.role === "superadmin") {
+      console.log("run to admin");
+      emitEvent("join", "superadmin");
+    } else {
+      // emitEvent("join", user?._id);
+    }
 
-    const off = onEvent<CommentNotifyEvent>("comment.notify", (msg: CommentNotifyEvent) => {
+    const off = onEvent<CommentNotifyEvent>("comment.notify", (msg) => {
       setNotifications((prev) => [...prev, msg.data.user?.email ?? ""]);
     });
-    // Đảm bảo cleanup function trả về void
+
+    const offOrder = onEvent<OrderNotifyEvent>("order.create.notify", (msg) => {
+      console.log("Order notify", msg);
+    });
+
+    // ⚠ chỉ return 1 lần
     return () => {
       if (typeof off === "function") off();
+      if (typeof offOrder === "function") offOrder();
     };
   }, [onEvent]);
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleOpen = (e: React.MouseEvent<HTMLElement>) => setAnchorEl(e.currentTarget);

@@ -24,7 +24,7 @@ const useCart = () => {
 
   return {
     shippingMethod: "ghn",
-    shippingFee: 25000,
+    shippingFee: shippingPrice,
     cartItems: carts,
     subTotalPrice,
     totalPrice,

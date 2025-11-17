@@ -28,12 +28,12 @@ const PaymentMethodForm = (props: TPropPaymentMethodForm) => {
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethodType>();
   const dispatch = useDispatch<AppDispatch>();
   type FormData = {
-    method: "paypal" | "stripe" | "momo" | "cod";
+    method: "paypal" | "stripe" | "momo" | "cod" | "qrcode";
     status: "pending" | "paid" | "failed" | "refunded";
     amount: number;
   };
 
-  const paymentMethods = ["paypal", "stripe", "momo", "cod"] as const;
+  const paymentMethods = ["paypal", "stripe", "momo", "cod", "qrcode"] as const;
   const paymentStatus = ["pending", "paid", "failed", "refunded"] as const;
   const schema = yup.object().shape({
     method: yup
@@ -67,7 +67,6 @@ const PaymentMethodForm = (props: TPropPaymentMethodForm) => {
   const fetchPaymentMethodByIdCallBack = useCallback(async () => {
     if (openModal.id) {
       const res = await getPaymentMethodService(openModal.id);
-      console.log("res edit attt", res);
       setPaymentMethod(res);
     }
   }, [openModal.id]);
