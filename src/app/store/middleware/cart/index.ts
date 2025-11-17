@@ -11,7 +11,6 @@ const synCarts: Middleware = (store) => (next) => (action) => {
     (store.dispatch as AppDispatch)(syncCartAction(cart.carts));
   }
   //store.dispatch(syncCartAction(cart.carts));
-  console.log("Next state:", state, store.getState());
   return result;
 };
 

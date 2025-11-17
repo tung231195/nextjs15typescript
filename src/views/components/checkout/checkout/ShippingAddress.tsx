@@ -5,7 +5,6 @@ type TPropShippingAddress = {
   addressDefault: AddressType;
 };
 const ShippingAddress = ({ hanldeChangeAddress, addressDefault }: TPropShippingAddress) => {
-  console.log("aaaaaaaaaa", addressDefault);
   return (
     <Box>
       {/* Title */}

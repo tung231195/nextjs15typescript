@@ -1,7 +1,9 @@
 "use client";
 
+import { useAuthContext } from "@/app/context/AuthContext";
 import { googleService } from "@/app/services/authService";
 import { Box } from "@mui/material";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 type GoogleCredentialResponse = {
@@ -36,11 +38,18 @@ declare global {
 }
 
 export default function GoogleLoginButton() {
+  const { setUser, setIsLogin } = useAuthContext();
+  const router = useRouter();
   const handleCredentialResponse = async (response: GoogleCredentialResponse) => {
-    console.log("✅ Google token:", response.credential);
     const googleToken = response.credential;
     const res = await googleService(googleToken);
-    console.log("response google", res);
+    localStorage.setItem("user", JSON.stringify(res.user));
+    localStorage.setItem("accessToken", res.accessToken);
+    setUser(res.user);
+    setIsLogin(true);
+    setTimeout(() => {
+      router.push("/");
+    }, 300);
   };
 
   useEffect(() => {

@@ -11,6 +11,7 @@ import ProductsByCategory from "@/views/components/catalog/ProductsByCategory";
 import { getCategoriesService } from "@/app/services/categoryService";
 import { getSlideshowsService } from "@/app/services/slideshowService";
 import Slideshows from "@/views/components/slideshow/Slideshows";
+import InstagramLayout from "@/views/components/instagrams/Instagram";
 
 export const metadata = {
   title: "Hướng dẫn SEO Next.js: Meta, Open Graph & App Router | MyWebsite",
@@ -50,6 +51,7 @@ export default async function IndexPage({ params }: TPageProps) {
       <ProductList products={productList} />
       <Divider sx={{ mt: 2 }} />
       <BlogList />
+      <InstagramLayout />
     </PageLayout>
   );
 }

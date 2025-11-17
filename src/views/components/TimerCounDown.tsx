@@ -16,7 +16,7 @@ const TimerCountDown = ({ endDate }: TPropTimer) => {
     const timer = setInterval(updateTimer, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [endDate]);
 
   function convertMsToTime(ms: number) {
     const hours = Math.floor(ms / (1000 * 60 * 60));
@@ -26,7 +26,6 @@ const TimerCountDown = ({ endDate }: TPropTimer) => {
   }
 
   const countDown = time !== null ? convertMsToTime(time) : null;
-  console.log("timer", time, countDown);
   return (
     <Box sx={{ mb: 2, display: "flex", gap: 1 }}>
       <Typography color="error" fontWeight={600}>

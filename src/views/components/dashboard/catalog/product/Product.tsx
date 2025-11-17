@@ -21,7 +21,6 @@ const Product = () => {
   }, [dispatch]);
 
   const rows = products.map((p) => ({ ...p, id: p._id }));
-  console.log("row", rows);
   const handleEditRow = (
     params: GridRenderCellParams<
       ProductType & {

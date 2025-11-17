@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import ProductGallery from "./ProductGallery";
 import VariantSelector from "./VariantSelector";
 import AddToCartButton from "./AddToCartButton";
+import ProductTabDetail from "./ProductTabDetail";
+import ProductRelate from "./ProductRelate";
 
 const ProductDetail = () => {
   const params = useParams();
@@ -22,8 +24,8 @@ const ProductDetail = () => {
     };
     fetProduct();
   }, [id]);
-  console.log("product detail", product);
-
+  const categoryId =
+    typeof product?.category === "object" ? product?.category._id : product?.category;
   return (
     <Box sx={{ mt: 4 }}>
       <Grid container spacing={4}>
@@ -55,9 +57,15 @@ const ProductDetail = () => {
             </Typography>
           )}
 
-          <AddToCartButton variant={selectedVariant} />
+          <Box mt={2}>
+            <AddToCartButton variant={selectedVariant} />
+          </Box>
         </Grid>
       </Grid>
+      <Box mt={2}> {product && <ProductTabDetail product={product} />}</Box>
+      <Box mt={2}>
+        {product && <ProductRelate id={product._id} category={categoryId as string} />}
+      </Box>
     </Box>
   );
 };

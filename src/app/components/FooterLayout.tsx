@@ -7,8 +7,7 @@ export default function FooterLayout() {
     <Box
       component="footer"
       sx={{
-        mt: "auto",
-        py: 2,
+        mt: 8,
         textAlign: "center",
         bgcolor: "primary.main",
         color: "white",

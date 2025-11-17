@@ -5,10 +5,10 @@ export type TParamsLogin = {
 
 export type PostType = {
   _id: string;
-  user: string;
+  user: string | User;
   title: string;
   content: string;
-  picture?: string;
+  images: string[];
   likes: LikeType[];
   likesCount: number;
   comments?: CommentType[];
@@ -18,6 +18,7 @@ export interface PostCreate {
   user: string;
   title: string;
   content: string;
+  images: string[];
 }
 
 export type SlideshowType = {
@@ -39,8 +40,24 @@ export type User = {
   _id: string;
   name: string;
   email: string;
+  role: "user" | "admin" | "superadmin";
 };
 
+export type Customer = {
+  _id: string;
+  name: string;
+  email: string;
+  address: Address[];
+  status: "enable" | "disabled";
+  createdAt?: Date;
+  authProvider?: "local" | "google" | "facebook";
+};
+export type CustomerType = {
+  name: string;
+  email: string;
+  status: "enable" | "disabled";
+  role: "user" | "admin" | "superadmin";
+};
 export type LikeType = {
   _id: string;
   user: string;
@@ -97,7 +114,8 @@ export interface ProductAttributeValue {
   valueNumber?: number;
   valueBoolean?: boolean;
 }
-
+export const ATTRIBUTE_COLOR_ID = "68e63089de8746d605fde99d" as const;
+export const ATTRIBUTE_SIZE_ID = "68e7c88af04ba84b032132e7" as const;
 export interface ProductVariant {
   _id?: string;
   sku: string;
@@ -158,7 +176,7 @@ export type CartItem = {
   image: string;
 };
 export interface PaymentMethod {
-  method: "paypal" | "stripe" | "momo" | "cod";
+  method: "paypal" | "stripe" | "momo" | "cod" | "qrcode";
   status: "pending" | "paid" | "failed" | "refunded";
   transactionId?: string;
   paidAt?: Date;
@@ -168,7 +186,7 @@ export interface PaymentMethod {
 }
 export interface PaymentMethodType {
   _id: string;
-  method: "paypal" | "stripe" | "momo" | "cod";
+  method: "paypal" | "stripe" | "momo" | "cod" | "qrcode";
   status: "pending" | "paid" | "failed" | "refunded";
   transactionId?: string;
   paidAt?: Date;
@@ -194,6 +212,8 @@ export interface DeliveryMethodType {
   shippingFee: number;
 }
 export type OrderItem = {
+  reference?: string;
+  user: string | User;
   items: CartItem[];
   shippingAddress: {
     fullName: string;
@@ -203,10 +223,13 @@ export type OrderItem = {
     country: string;
   };
   paymentMethod: string;
+  shippingMethod: string;
   itemsPrice: number;
   shippingPrice: number;
   taxPrice: number;
   totalPrice: number;
+  createdAt?: Date;
+  status: "pending" | "processing" | "delivered" | "cancel";
 };
 export type IOPTION = {
   label: string;

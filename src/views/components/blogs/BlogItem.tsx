@@ -12,7 +12,6 @@ import { red } from "@mui/material/colors";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import LikeIcon from "@mui/icons-material/ThumbUpAlt";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Like, PostType } from "@/app/types";
 import { useAuthContext } from "@/app/context/AuthContext";
 import Link from "next/link";
@@ -24,26 +23,28 @@ type TPropBlogItem = {
 };
 export default function BlogItem({ post, hanldeLike, liked }: TPropBlogItem) {
   const { user } = useAuthContext();
+  const auth = typeof post.user === "object" ? post.user.name : "customer".toLocaleLowerCase();
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardHeader
+        sx={{ minHeight: "60px" }}
         avatar={
           <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
             R
           </Avatar>
         }
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
         title={post.title}
-        subheader="September 14, 2016"
+        subheader={`September 14, 2016 - ${auth}`}
       />
       <Link href={`blog/${post._id}`}>
-        <CardMedia component="img" height="194" image="/images/cms/1.jpg" alt="Paella dish" />
+        <CardMedia
+          component="img"
+          height="194"
+          image={post.images && post.images[0] ? post.images[0] : `/images/cms/1.jpg`}
+          alt="Paella dish"
+        />
       </Link>
-      <CardContent>
+      <CardContent sx={{ textAlign: "center", minHeight: "40px" }}>
         <Typography variant="body2" sx={{ color: "text.secondary" }}>
           {post.content}
         </Typography>

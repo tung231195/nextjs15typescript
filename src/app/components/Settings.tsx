@@ -1,3 +1,4 @@
+"use client";
 import * as React from "react";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
@@ -7,6 +8,7 @@ import { Icon } from "@iconify/react";
 import Link from "next/link";
 import { useAuthContext } from "../context/AuthContext";
 import { Typography } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 export default function Settings() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -17,7 +19,8 @@ export default function Settings() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const { user } = useAuthContext();
+  const { user, logout } = useAuthContext();
+  const router = useRouter();
   return (
     <div>
       <Button
@@ -45,8 +48,18 @@ export default function Settings() {
         <MenuItem> {user && <Typography variant="button">{user.email}</Typography>}</MenuItem>
         <MenuItem onClick={handleClose}>Profile</MenuItem>
         <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Link href="/login">Login</Link>
+        <MenuItem>
+          {!user ? (
+            <Button
+              onClick={() => {
+                router.push("/login");
+              }}
+            >
+              Login
+            </Button>
+          ) : (
+            <Button onClick={logout}>Logout</Button>
+          )}
         </MenuItem>
         <MenuItem onClick={handleClose}>
           <Link href="/dashboard">Dashboard</Link>

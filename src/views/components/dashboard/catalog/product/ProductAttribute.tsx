@@ -41,7 +41,6 @@ const ProductAttributeForm = ({ attributes }: AttFormProps) => {
         {fields.map((field, index) => {
           const watchedAttrId = watchedAttributes?.[index]?.attribute;
           const selectedAttr = attributes.find((a) => a._id === watchedAttrId);
-          console.log("aaaaaaaaaa", fields, selectedAttr);
           return (
             <Grid container spacing={2} alignItems="center" key={field.id}>
               {/* Chọn loại attribute */}

@@ -22,10 +22,9 @@ export default function MiniCart() {
   };
   const dispatch = useDispatch<AppDispatch>();
   React.useEffect(() => {
-    console.log("dispatch get cart action");
     dispatch(getCartAction());
   }, [dispatch]);
-  const { cartItems, totalPrice, totalQty, remove } = useCart();
+  const { cartItems, subTotalPrice, totalQty, remove } = useCart();
   /*** hanldle  */
   const gotoCheckout = () => {
     router.push("/checkout");
@@ -107,7 +106,7 @@ export default function MiniCart() {
                 padding: "10px 0",
               }}
             >
-              Total: {totalPrice}
+              Sub Total: {subTotalPrice}
             </Typography>
             <Button onClick={gotoCart} fullWidth variant="outlined">
               Go to cart

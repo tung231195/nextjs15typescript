@@ -38,7 +38,6 @@ type TPropProductForm = {
 type TCateOption = { label: string; value: string };
 
 const ProductForm = (props: TPropProductForm) => {
-  console.log("product data", props);
   //return <>Product Form Data</>;
   const productTypeOptions = [
     { label: "Simple", value: "simple" },
@@ -48,7 +47,7 @@ const ProductForm = (props: TPropProductForm) => {
   const attributes = useSelector((state: RootState) => state.attribute.attributes);
   const router = useRouter();
   const { handleClose, openModal } = props;
-  const [date, setDate] = useState<Date | null>(null);
+  //const [date, setDate] = useState<Date | null>(null);
   const [showVariant, setShowVariant] = useState<boolean>(false);
   const [product, setProduct] = useState<ProductType>();
   const dispatch = useDispatch<AppDispatch>();
@@ -158,7 +157,7 @@ const ProductForm = (props: TPropProductForm) => {
     if (openModal.id) {
       const cat = product.category;
       const categoryId = typeof cat === "object" && cat !== null ? cat._id : cat;
-      console.log("product edit", product);
+
       reset({
         name: product?.name ?? "",
         type: product?.type ?? "",
@@ -198,9 +197,7 @@ const ProductForm = (props: TPropProductForm) => {
   /** context  */
   const { user } = useAuthContext();
   const onSubmit = async (data: FormData) => {
-    console.log("data product edit", data, date);
-    if (date) setValue("endDate", date);
-    console.log("data  product edit after", data, date);
+    //if (date) setValue("endDate", date);
     if (!user) {
       router.push("/login");
       return;
@@ -209,7 +206,6 @@ const ProductForm = (props: TPropProductForm) => {
       dispatch(updateProduct({ ...data, _id: openModal.id }));
       toast.success("Update Succesfully");
     } else {
-      console.log(" add product ");
       dispatch(addProduct(data));
       toast.success("Add New  Succesfully");
     }
@@ -218,13 +214,10 @@ const ProductForm = (props: TPropProductForm) => {
 
   const onGenerateVariants = () => {
     const generated = generateVariantsFromAttributes(attributes);
-    console.log("generated att", generated);
     setValue("variants", generated);
   };
 
   // const typeValue = useWatch({ control, name: "type" });
-  console.log("errror", errors);
-  console.log("attributes aaaaaaaaaa", attributes);
   const attributeOptions: AttributeOption[] = (attributes || []).map((att) => ({
     _id: att._id,
     name: att.name,
@@ -245,7 +238,6 @@ const ProductForm = (props: TPropProductForm) => {
   const [finalPrice, setFinalPrice] = useState<number>(0);
 
   useEffect(() => {
-    console.log("watch", watchDicount, watchPrice);
     if (!watchProductType) return;
     if (watchProductType === "simple") {
       setShowVariant(false);
@@ -255,12 +247,10 @@ const ProductForm = (props: TPropProductForm) => {
   }, [watchProductType]);
 
   useEffect(() => {
-    console.log("watch", watchDicount, watchPrice);
     if (!watchPrice || !watchDicount) return;
     if (watchDicount.type === "amount") {
       setFinalPrice(watchPrice - watchDicount.value);
     } else {
-      console.log("watch percent");
       setFinalPrice(watchPrice - watchDicount.value * (watchPrice / 100));
     }
   }, [watchDicount, watchPrice]);

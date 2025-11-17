@@ -14,7 +14,7 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
-export async function generateMetadata(props: Omit<LayoutProps<"/[locale]">, "children">) {
+export async function generateMetadata() {
   // const { locale } = await props.params;
 
   // const t = await getTranslations({
@@ -54,7 +54,6 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
   return (
     <Container maxWidth="xl">
       <header>
-        <h1>Next.js SEO Template</h1>
         <StructuredData data={schemaOrg} />
       </header>
       <HeaderLayout />

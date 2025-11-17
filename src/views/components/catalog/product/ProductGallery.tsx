@@ -5,10 +5,8 @@ import Image from "next/image";
 import { useState } from "react";
 
 export default function ProductGallery({ images }: { images: string[] }) {
-  console.log("image selected", images);
-  const defaultImage = images ? images[0] : "/images/cms/1.jpg";
-  const [selected, setSelected] = useState<string>(defaultImage);
-  console.log("image selected", selected);
+  const defaultImage = images && images[0] ? images[0] : "/images/cms/1.jpg";
+  const [selectedImage, setSelectedImage] = useState<string>(defaultImage);
 
   return (
     <Box>
@@ -23,7 +21,7 @@ export default function ProductGallery({ images }: { images: string[] }) {
         }}
       >
         <Image
-          src={selected ? selected : defaultImage}
+          src={selectedImage ? selectedImage : defaultImage}
           alt="product"
           width={600}
           height={400}
@@ -41,9 +39,9 @@ export default function ProductGallery({ images }: { images: string[] }) {
                 borderRadius: 2,
                 overflow: "hidden",
                 cursor: "pointer",
-                border: selected === img ? "2px solid #1976d2" : "1px solid #ddd",
+                border: selectedImage === img ? "2px solid #1976d2" : "1px solid #ddd",
               }}
-              onClick={() => setSelected(img)}
+              onClick={() => setSelectedImage(img)}
             >
               <Image src={img} alt="thumb" width={80} height={80} style={{ objectFit: "cover" }} />
             </Box>

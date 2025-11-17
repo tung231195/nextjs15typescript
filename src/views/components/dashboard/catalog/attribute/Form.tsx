@@ -74,7 +74,6 @@ const AttributeForm = (props: TPropAttributeForm) => {
   const fetchAttributeByIdCallBack = useCallback(async () => {
     if (openModal.id) {
       const res = await getAttributeService(openModal.id);
-      console.log("res edit attt", res);
       setAttribute(res);
     }
   }, [openModal.id]);

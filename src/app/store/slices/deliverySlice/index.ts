@@ -85,7 +85,6 @@ const deliveryMethodSlice = createSlice({
         state.error = null;
       })
       .addCase(deleteDeliveryMethod.fulfilled, (state, action: PayloadAction<string>) => {
-        console.log("delete action", action.payload, state.deliveryMethods);
         state.loading = false;
         state.deliveryMethods = state.deliveryMethods.filter((p) => p._id !== action.payload);
       })

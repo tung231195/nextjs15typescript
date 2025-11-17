@@ -4,9 +4,7 @@ import {
   Button,
   Card,
   CardActionArea,
-  CardActions,
   CardContent,
-  CardHeader,
   CardMedia,
   Chip,
   Typography,
@@ -20,7 +18,7 @@ const ProductSaleItem = ({ product }: TPropSaleItem) => {
   return (
     <Card>
       <CardMedia sx={{ height: 240 }} image={product.images?.[0] || ""} title={product.name} />
-      <CardActionArea sx={{ display: "flex", justifyContent: "space-between" }}>
+      <CardActionArea component="div" sx={{ display: "flex", justifyContent: "space-between" }}>
         <CardContent>
           <Typography variant="body1">{product.name}</Typography>
           <Typography
@@ -41,9 +39,7 @@ const ProductSaleItem = ({ product }: TPropSaleItem) => {
 
           {product.endDate && <TimerCountDown endDate={new Date(product.endDate)} />}
         </CardContent>
-        <CardActions>
-          <Button variant="outlined">Add to cart</Button>
-        </CardActions>
+        <Button variant="outlined">Add to cart</Button>
       </CardActionArea>
     </Card>
   );

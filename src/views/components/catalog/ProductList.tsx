@@ -1,6 +1,6 @@
 "use client";
 import ProductItem from "./ProductItem";
-import { Grid, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { ProductType } from "@/app/types";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
@@ -11,7 +11,7 @@ const ProductList = (props: TPropProductList) => {
   const { products } = props;
   return (
     <>
-      <Typography variant="h6" fontWeight={600}>
+      <Typography sx={{ padding: "25px 0" }} variant="h6" fontWeight={600}>
         Product List
       </Typography>
       <Swiper
@@ -19,7 +19,7 @@ const ProductList = (props: TPropProductList) => {
         spaceBetween={20}
         slidesPerView={1}
         navigation
-        pagination={{ clickable: true }}
+        pagination={false}
         autoplay={{ delay: 3000, disableOnInteraction: false }}
         loop
         breakpoints={{

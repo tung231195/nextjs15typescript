@@ -1,5 +1,5 @@
 import Stripe from "stripe";
-
+import { addOrdertsService } from "../../../services/orderService";
 export async function POST(req) {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
     apiVersion: "2024-06-20",
@@ -18,7 +18,36 @@ export async function POST(req) {
 
   if (event.type === "checkout.session.completed") {
     const session = event.data.object;
-    console.log("✅ Payment success:", session);
+    try {
+      const userId = session.metadata?.userId;
+      const items = JSON.parse(session.metadata?.cartItems || "[]");
+      const shippingAddress = JSON.parse(session.metadata?.shippingAddress || "{}");
+
+      const newOrder = {
+        user: userId,
+        reference: session.id,
+        items,
+        shippingAddress,
+        paymentMethod: "stripe",
+        paymentResult: {
+          id: session.payment_intent,
+          status: session.payment_status,
+          update_time: new Date().toISOString(),
+          email_address: session.customer_email ?? "",
+        },
+        itemsPrice: Number(session.amount_subtotal) / 100,
+        shippingPrice: 0,
+        taxPrice: 0,
+        totalPrice: Number(session.amount_total) / 100,
+        isPaid: true,
+        paidAt: new Date(),
+        isDelivered: false,
+        status: "processing",
+      };
+      await addOrdertsService(newOrder);
+    } catch (error) {
+      console.error("❌ Failed to save order:", error);
+    }
   }
 
   return new Response(JSON.stringify({ received: true }), { status: 200 });

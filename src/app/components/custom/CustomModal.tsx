@@ -20,10 +20,11 @@ type TPropsCustomModal = {
   children: React.ReactNode;
   open: boolean;
   handleClose: () => void;
+  sx?: object;
 };
 
 export default function CustomModal(props: TPropsCustomModal) {
-  const { children, open, handleClose } = props;
+  const { children, open, handleClose, sx } = props;
   return (
     <div>
       <Modal
@@ -32,7 +33,7 @@ export default function CustomModal(props: TPropsCustomModal) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>{children}</Box>
+        <Box sx={sx ?? style}>{children}</Box>
       </Modal>
     </div>
   );

@@ -74,7 +74,6 @@ const productSlice = createSlice({
         state.error = null;
       })
       .addCase(deleteProduct.fulfilled, (state, action: PayloadAction<string>) => {
-        console.log("delete action", action.payload, state.products);
         state.loading = false;
         state.products = state.products.filter((p) => p._id !== action.payload);
       })

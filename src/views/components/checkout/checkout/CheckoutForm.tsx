@@ -1,8 +1,8 @@
 "use client";
 
 import useCart from "@/app/hooks/useCart";
-import { Box, Button, Divider, Grid, Paper, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Box, Button, Checkbox, Divider, Grid, Paper, Typography } from "@mui/material";
+import { ChangeEvent, useEffect, useState } from "react";
 import ShippingAddress from "./ShippingAddress";
 import ProductItems from "./ProductItems";
 import ShippingMethod from "./ShippingMethod";
@@ -10,7 +10,7 @@ import PaymentMethod from "./PaymentMethod";
 import CustomModal from "@/app/components/custom/CustomModal";
 import AddressModal from "../address/AddressModal";
 import AddressForm from "../address/AddressForm";
-import { AddressType, DeliveryMethodType, PaymentMethodType } from "@/app/types";
+import { AddressType, DeliveryMethodType, OrderItem, PaymentMethodType } from "@/app/types";
 import {
   getAddressDefaultService,
   getAddressesService,
@@ -24,6 +24,14 @@ import { getDeliveryMethodService } from "@/app/services/deliveryService";
 import PaymentMethodForm from "../paymentMethod/PaymentMethodForm";
 import { getPaymentMethodService } from "@/app/services/paymentMethodService";
 import { fetchPaymentMethods } from "@/app/store/actions/payment";
+import { orderAction } from "@/app/store/slices/cartSlice";
+import { useAuthContext } from "@/app/context/AuthContext";
+import toast from "react-hot-toast";
+import {
+  paymentCreateQR,
+  paymentStripePayment,
+  paymentVNPAYService,
+} from "@/app/services/orderService";
 
 const CheckoutForm = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -35,11 +43,13 @@ const CheckoutForm = () => {
     id: "",
     open: false,
   });
+  const [isCheckout, setIsCheckout] = useState<boolean>(false);
   const [showShippingMethod, setShowShippingMethod] = useState<boolean>(false);
   const [shippingMethod, setShippingMethod] = useState<DeliveryMethodType>();
   const [showPaymentMethod, setShowPaymentMethod] = useState<boolean>(false);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethodType>();
   const [listAddress, setListAddress] = useState<AddressType[]>([]);
+  const [qrcode, setQrCode] = useState<string>("");
   const [addressUpdate, setAddressUpdate] = useState<AddressType>({
     _id: "",
     name: "",
@@ -60,7 +70,7 @@ const CheckoutForm = () => {
     ward: { label: "", value: "" },
     isDefault: false,
   });
-
+  const { user } = useAuthContext();
   useEffect(() => {
     const fetchListAddress = async () => {
       const listAdd = await getAddressesService();
@@ -139,7 +149,6 @@ const CheckoutForm = () => {
   const handleMethod = async (_id: string) => {
     const shippingMethod = await getDeliveryMethodService(_id);
     setShippingMethod(shippingMethod);
-    console.log(shippingMethod);
   };
 
   const handleConfirmShippingMethod = () => {
@@ -148,38 +157,84 @@ const CheckoutForm = () => {
       shippingMethod?.shippingFee ?? 0, // ✅ mặc định 0 nếu undefined
     );
     setShowShippingMethod(false);
-    console.log("Chọn phương thức vận chuyển");
   };
   const handlePaymentMethod = async (_id: string) => {
-    await getPaymentMethodService(_id);
+    const paymentMethod = await getPaymentMethodService(_id);
+    if (paymentMethod.method == "qrcode") {
+      const qr = await paymentCreateQR();
+      setQrCode(qr.data.qrImage ?? "");
+    } else {
+      setQrCode("");
+    }
     setPaymentMethod(paymentMethod);
-    setShowPaymentMethod(false);
   };
 
   const handleConfirmPaymentMethod = () => {
-    setShipping(
-      shippingMethod?.method ?? "ghn",
-      shippingMethod?.shippingFee ?? 0, // ✅ mặc định 0 nếu undefined
-    );
+    setShowPaymentMethod(false);
   };
-  const handleProcessCheckout = () => {
-    const orderItem = {
-      items: cartItems,
-      shippingAddress: {
-        fullName: addressDefault.name,
-        address: addressDefault.province,
-        city: addressDefault.province,
-        postalCode: addressDefault.postalCode,
-        country: addressDefault.country,
-      },
-      paymentMethod: paymentMethod?.method ?? "cod",
-      itemsPrice: subTotalPrice,
-      shippingPrice: shippingMethod?.shippingFee ?? 0,
-      taxPrice: 10,
-      totalPrice: totalPrice,
-    };
-    // dispatch(orderAction(orderItem));
-    console.log("checkout data", orderItem);
+  const handleProcessCheckout = async () => {
+    try {
+      if (!user) {
+        toast.error("You need to login to checkout");
+        return;
+      }
+
+      if (!paymentMethod) {
+        toast.error("You need to choose a payment method");
+        return;
+      }
+
+      if (!shippingMethod) {
+        toast.error("You need to choose a shipping method");
+        return;
+      }
+
+      const orderItem: OrderItem = {
+        user: user?._id as string,
+        items: cartItems,
+        shippingAddress: {
+          fullName: addressDefault.name,
+          address: addressDefault.province?.label ?? "",
+          city: addressDefault.province?.label ?? "",
+          postalCode: addressDefault.postalCode as string,
+          country: addressDefault.country,
+        },
+        paymentMethod: paymentMethod?.method ?? "cod",
+        shippingMethod: shippingMethod?.method ?? "ghtk",
+        itemsPrice: subTotalPrice as number,
+        shippingPrice: shippingMethod?.shippingFee ?? 0,
+        taxPrice: 10,
+        totalPrice: totalPrice,
+        status: "processing",
+      };
+
+      switch (paymentMethod.method) {
+        case "cod":
+          await dispatch(orderAction(orderItem));
+          break;
+        case "paypal":
+          await paymentVNPAYService();
+          break;
+        case "stripe":
+          await paymentStripePayment(orderItem);
+          break;
+        case "qrcode":
+          await paymentStripePayment(orderItem);
+          break;
+        default:
+          toast.error("Invalid payment method");
+          break;
+      }
+
+      // ✅ check result
+      toast.success("You have checked out successfully");
+    } catch (err) {
+      console.error("checkout error", err);
+      toast.error("Something went wrong during checkout");
+    }
+  };
+  const hanldeAgree = (e: ChangeEvent<HTMLInputElement>) => {
+    setIsCheckout(e.target.checked);
   };
   return (
     <Box
@@ -215,6 +270,7 @@ const CheckoutForm = () => {
         <PaymentMethod
           paymentMethod={paymentMethod}
           handleChangePaymentMethod={() => handleChangePaymentMethod()}
+          qrcode={qrcode}
         />
         <Divider sx={{ m: "15px 0" }} />
         <Box>
@@ -236,12 +292,20 @@ const CheckoutForm = () => {
         <Box>
           <Grid container>
             <Grid size={{ md: 8 }}>
-              <Typography>
-                Nhấn Đặt hàng đồng nghĩa với việc bạn đồng ý tuân theo Điều khoản Shopee
-              </Typography>
+              <Box sx={{ display: "flex", gap: 2 }}>
+                <Checkbox onChange={(e: ChangeEvent<HTMLInputElement>) => hanldeAgree(e)} />
+                <Typography>
+                  Nhấn Đặt hàng đồng nghĩa với việc bạn đồng ý tuân theo Điều khoản Shopee
+                </Typography>
+              </Box>
             </Grid>
             <Grid size={{ md: 4 }} sx={{ display: "flex", justifyContent: "center" }}>
-              <Button onClick={handleProcessCheckout} variant="contained" size="large">
+              <Button
+                disabled={!isCheckout}
+                onClick={handleProcessCheckout}
+                variant="contained"
+                size="large"
+              >
                 Checkout
               </Button>
             </Grid>
@@ -284,6 +348,7 @@ const CheckoutForm = () => {
           handleConfirmPaymentMethod={() => handleConfirmPaymentMethod()}
           paymentMethods={paymentMethods}
           paymentMethod={paymentMethod}
+          qrcode={qrcode}
         />
       </CustomModal>
     </Box>

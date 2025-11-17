@@ -16,9 +16,12 @@ export default function Breadcrumb() {
     const label = decodeURIComponent(segment)
       .replace(/-/g, " ")
       .replace(/\b\w/g, (l) => l.toUpperCase());
+
     return { href, label };
   });
 
+  //const isHomePage = segments.length === 0 || /^[a-z]{2}$/.test(segments[0]);
+  //if (isHomePage) return;
   return (
     <div className="my-4">
       <Breadcrumbs

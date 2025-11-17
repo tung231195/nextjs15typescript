@@ -1,12 +1,10 @@
 "use client";
 import { ProductType } from "@/app/types";
-import { Box, CardHeader, CardMedia, Grid, Typography } from "@mui/material";
-import { Fragment, useEffect, useState } from "react";
+import { Box, CardMedia, Grid, Typography } from "@mui/material";
 import ProductSaleItem from "./product/ProductSaleItem";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
-import TimerCountDown from "../TimerCounDown";
 
 type TPropSaleProduct = {
   productSale: ProductType[];
@@ -15,8 +13,8 @@ const ProductCountDown = ({ productSale }: TPropSaleProduct) => {
   return (
     <>
       <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
-        <Typography variant="h6" fontWeight={600}>
-          🎁 Promotion Products
+        <Typography sx={{ padding: "26px 0" }} variant="h6" fontWeight={600}>
+          Promotion Products
         </Typography>
       </Box>
       <Grid container spacing={2}>

@@ -16,14 +16,26 @@ const ShippingMethod = ({ handleChangeDelivery, shippingMethod }: TPropShippingM
           </Box>
         </Grid>
         <Grid size={{ md: 7, sm: 12 }}>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <Typography variant="h6">Delivery Method: {shippingMethod?.method}</Typography>
+          <Box
+            sx={{ display: "flex", alignItems: "center", gap: 1, justifyContent: "space-between" }}
+          >
             <Box>
-              <Icon icon="mdi:truck-delivery-outline" fontSize={22} />
-              <Typography>Nhận từ 18 Th10 - 20 Th10</Typography>
+              <Typography variant="body1">Delivery Method: </Typography>
+              <Typography variant="caption">
+                {shippingMethod ? shippingMethod?.method : "no shipping method choosen"}
+              </Typography>
             </Box>
+            {shippingMethod && (
+              <Box>
+                <Icon icon="mdi:truck-delivery-outline" fontSize={22} />
+                <Typography>Nhận từ 18 Th10 - 20 Th10</Typography>
+                <Typography variant="body1">
+                  <span>shipping fee:</span>
+                  {shippingMethod?.shippingFee}
+                </Typography>
+              </Box>
+            )}
             <Button onClick={handleChangeDelivery}>change</Button>
-            <Typography variant="h6">{shippingMethod?.shippingFee}</Typography>
           </Box>
         </Grid>
       </Grid>
