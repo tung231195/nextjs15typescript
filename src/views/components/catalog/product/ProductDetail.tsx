@@ -1,5 +1,5 @@
 "use client";
-import { getProductService } from "@/app/services/productService";
+import { getProductServiceBySlug } from "@/app/services/productService";
 import { ProductType, ProductVariant } from "@/app/types";
 import { Box, Divider, Grid, Typography } from "@mui/material";
 import { useParams } from "next/navigation";
@@ -9,23 +9,27 @@ import VariantSelector from "./VariantSelector";
 import AddToCartButton from "./AddToCartButton";
 import ProductTabDetail from "./ProductTabDetail";
 import ProductRelate from "./ProductRelate";
+import PriceFormat from "../Price";
+import { useLocale } from "next-intl";
+import { htmlToText } from "@/app/utils";
 
 const ProductDetail = () => {
   const params = useParams();
-  const { id } = params;
+  const { productSlug } = params;
   const [product, setProduct] = useState<ProductType>();
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(null);
 
   useEffect(() => {
     const fetProduct = async () => {
-      const res = await getProductService(id as string);
+      const res = await getProductServiceBySlug(productSlug as string);
 
       setProduct(res);
     };
     fetProduct();
-  }, [id]);
+  }, [productSlug]);
   const categoryId =
     typeof product?.category === "object" ? product?.category._id : product?.category;
+  const locale = useLocale();
   return (
     <Box sx={{ mt: 4 }}>
       <Grid container spacing={4}>
@@ -41,11 +45,11 @@ const ProductDetail = () => {
           </Typography>
 
           <Typography variant="h6" color="text.secondary" sx={{ mt: 2 }}>
-            ${product?.price.toFixed(2)}
+            <PriceFormat amount={product?.price as number} locale={locale} />
           </Typography>
 
           <Typography variant="body1" sx={{ mt: 3, mb: 4 }}>
-            {product?.description}
+            {product?.description && htmlToText(product?.description)}
           </Typography>
 
           <Divider sx={{ my: 3 }} />

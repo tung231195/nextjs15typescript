@@ -32,8 +32,10 @@ import {
   paymentStripePayment,
   paymentVNPAYService,
 } from "@/app/services/orderService";
+import { useRouter } from "next/navigation";
 
 const CheckoutForm = () => {
+  const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const shippingMethods = useSelector((state: RootState) => state.delivery.deliveryMethods);
   const paymentMethods = useSelector((state: RootState) => state.paymentMethod.paymentMethods);
@@ -225,9 +227,10 @@ const CheckoutForm = () => {
           toast.error("Invalid payment method");
           break;
       }
-
       // ✅ check result
       toast.success("You have checked out successfully");
+
+      router.push("/");
     } catch (err) {
       console.error("checkout error", err);
       toast.error("Something went wrong during checkout");
@@ -295,7 +298,7 @@ const CheckoutForm = () => {
               <Box sx={{ display: "flex", gap: 2 }}>
                 <Checkbox onChange={(e: ChangeEvent<HTMLInputElement>) => hanldeAgree(e)} />
                 <Typography>
-                  Nhấn Đặt hàng đồng nghĩa với việc bạn đồng ý tuân theo Điều khoản Shopee
+                  Nhấn Đặt hàng đồng nghĩa với việc bạn đồng ý tuân theo Điều khoản
                 </Typography>
               </Box>
             </Grid>

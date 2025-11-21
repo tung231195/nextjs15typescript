@@ -11,6 +11,13 @@ export default function Breadcrumb() {
   const pathname = usePathname();
   const segments = pathname.split("/").filter(Boolean);
 
+  // Detect homepage
+  const isHomePage =
+    segments.length === 0 || // "/"
+    (segments.length === 1 && /^[a-z]{2}$/i.test(segments[0])); // "/en" hoặc "/vi"
+
+  if (isHomePage) return null;
+
   const crumbs = segments.map((segment, index) => {
     const href = "/" + segments.slice(0, index + 1).join("/");
     const label = decodeURIComponent(segment)
@@ -20,8 +27,6 @@ export default function Breadcrumb() {
     return { href, label };
   });
 
-  //const isHomePage = segments.length === 0 || /^[a-z]{2}$/.test(segments[0]);
-  //if (isHomePage) return;
   return (
     <div className="my-4">
       <Breadcrumbs
@@ -32,6 +37,7 @@ export default function Breadcrumb() {
         <Link href="/" style={{ color: "#1976d2", textDecoration: "none" }}>
           Home
         </Link>
+
         {crumbs.map((crumb, i) =>
           i === crumbs.length - 1 ? (
             <Typography key={i} color="text.primary">

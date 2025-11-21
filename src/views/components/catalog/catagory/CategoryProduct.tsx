@@ -5,6 +5,7 @@ import { Grid } from "@mui/material";
 import Sidebar from "./Sidebar";
 import { useEffect, useState } from "react";
 import { getCategoryProducts, getPriceRange } from "@/app/services/productService";
+import Pagination from "../Pagination";
 // NOTE: Thay bằng ObjectId thực sự của color/size attribute trong DB
 
 type AttributeVariant = {
@@ -19,6 +20,7 @@ type FacetType = {
     attributeId: string;
     attributeName: string;
   };
+  totalItems: { count: number }[];
 };
 
 type TPropCategoryProduct = {
@@ -27,7 +29,12 @@ type TPropCategoryProduct = {
   slug: string;
 };
 const CategoryProduct = ({ products: initialProducts, slug, facets }: TPropCategoryProduct) => {
+  const totalCount = facets.totalItems[0].count;
+  const [page, setPage] = useState(1);
+  const pageSize = 3;
   const [products, setProducts] = useState<ProductType[]>(initialProducts);
+
+  // console.log("product list", initialProducts);
   const [priceRange, setPriceRange] = useState<number[]>([0, 0]);
   const [priceRangeDB, setPriceRangeDB] = useState<number[]>([0, 0]);
   const [variantsAtt, setVariantsAtt] = useState<AttributeVariant[]>([]);
@@ -35,11 +42,18 @@ const CategoryProduct = ({ products: initialProducts, slug, facets }: TPropCateg
   useEffect(() => {
     const fetchCategoryProducts = async () => {
       const [minPrice, maxPrice] = priceRange;
-      const res = await getCategoryProducts({ slug, minPrice, maxPrice, variants: variantsAtt });
+      const res = await getCategoryProducts({
+        slug,
+        minPrice,
+        maxPrice,
+        variants: variantsAtt,
+        page: page,
+        limit: pageSize,
+      });
       setProducts(res.products);
     };
     fetchCategoryProducts();
-  }, [priceRange, variantsAtt]);
+  }, [priceRange, variantsAtt, page]);
   const handlePriceChange = async (range: number[]) => {
     setPriceRange(range);
   };
@@ -93,7 +107,7 @@ const CategoryProduct = ({ products: initialProducts, slug, facets }: TPropCateg
           />
         </Grid>
         <Grid size={{ md: 10 }}>
-          <Grid container>
+          <Grid container spacing={2}>
             {products &&
               products.length > 0 &&
               products.map((p) => {
@@ -104,6 +118,12 @@ const CategoryProduct = ({ products: initialProducts, slug, facets }: TPropCateg
                 );
               })}
           </Grid>
+          <Pagination
+            currentPage={page}
+            totalItems={totalCount}
+            pageSize={pageSize}
+            onPageChange={(p) => setPage(p)}
+          />
         </Grid>
       </Grid>
     </>

@@ -1,5 +1,7 @@
+import BlogList from "@/views/components/blogs/BlogList";
+
 const BlogListPage = () => {
-  return <>Blog List</>;
+  return <BlogList />;
 };
 
 export default BlogListPage;

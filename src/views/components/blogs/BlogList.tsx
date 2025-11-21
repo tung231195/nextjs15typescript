@@ -14,11 +14,13 @@ import toast from "react-hot-toast";
 import { updatePostLike, updatePostUnLike } from "@/app/store/slices/postSlice";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import { useTranslations } from "next-intl";
 
 //const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 const NOTIF = process.env.NEXT_PUBLIC_BACKEND_URL || "https://nodejs2015typescript.onrender.com";
 
 export default function BlogList() {
+  const t = useTranslations("IndexPage");
   const { user } = useAuthContext();
   const dispatch = useDispatch<AppDispatch>();
   const posts = useSelector((state: RootState) => state.post.posts);
@@ -44,9 +46,18 @@ export default function BlogList() {
   };
   return (
     <Box mt={3}>
-      <Typography sx={{ padding: "25px 0" }} variant="h6">
-        Blog List
+      <Typography
+        variant="h5"
+        fontWeight={700}
+        sx={{
+          background: "linear-gradient(90deg, #000, #000)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+        }}
+      >
+        {t("BlogList")}
       </Typography>
+
       <Grid container spacing={1} mt={0}>
         <Swiper
           modules={[Navigation, Pagination, Autoplay]}

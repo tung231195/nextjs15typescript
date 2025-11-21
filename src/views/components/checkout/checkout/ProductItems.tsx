@@ -1,9 +1,12 @@
 import { CartItem } from "@/app/types";
 import { Box, CardMedia, Grid, Typography } from "@mui/material";
+import PriceFormat from "../../catalog/Price";
+import { useLocale } from "next-intl";
 type TPropProductItems = {
   cartItems: CartItem[];
 };
 const ProductItems = ({ cartItems }: TPropProductItems) => {
+  const locale = useLocale();
   return (
     <Box>
       <Grid container>
@@ -49,9 +52,11 @@ const ProductItems = ({ cartItems }: TPropProductItems) => {
                 </Box>
               </Grid>
               <Grid size={{ md: 2, sm: 12 }}>
-                <Typography variant="h6" gutterBottom>
-                  {product.price}
-                </Typography>
+                <PriceFormat
+                  amount={product.price}
+                  saleAmount={product.discount} // <-- MUST PASS THIS
+                  locale={locale}
+                />
               </Grid>
               <Grid size={{ md: 2, sm: 12 }}>
                 <Typography variant="h6" gutterBottom>

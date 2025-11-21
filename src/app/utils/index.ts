@@ -101,3 +101,21 @@ export const groupColorBySize = (
   }));
   return variantAtt;
 };
+
+export function generateProductLink({
+  locale,
+  categorySlug,
+  productSlug,
+}: {
+  locale: string;
+  categorySlug: string;
+  productSlug: string;
+}) {
+  return `/${locale}/catalog/${categorySlug}/${productSlug}`;
+}
+export const htmlToText = (html: string | undefined | null): string => {
+  if (!html) return "";
+
+  // Remove all HTML tags
+  return html.replace(/<[^>]+>/g, "").trim();
+};

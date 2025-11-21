@@ -131,6 +131,7 @@ export type DiscountType = {
 export type ProductType = {
   _id: string;
   name: string;
+  slug?: string;
   type: "simple" | "variant";
   description: string;
   images: string[] | undefined;
@@ -161,6 +162,7 @@ export type Product = {
 export type CategoryType = {
   _id: string;
   name: string;
+  slug?: string;
   description: string;
 };
 export type Category = {
@@ -174,6 +176,7 @@ export type CartItem = {
   quantity: number;
   price: number;
   image: string;
+  discount?: DiscountType;
 };
 export interface PaymentMethod {
   method: "paypal" | "stripe" | "momo" | "cod" | "qrcode";

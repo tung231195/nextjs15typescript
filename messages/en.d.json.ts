@@ -8,25 +8,58 @@ declare const messages: {
   },
   "IndexPage": {
     "description": "This is a basic example that demonstrates the usage of <code>next-intl</code> with the Next.js App Router. Try changing the locale in the top right corner and see how the content changes.",
-    "title": "next-intl example"
+    "title": "next-intl example",
+    "newProducts": "New Products",
+    "BlogList": "New Blogs"
   },
   "LocaleLayout": {
     "title": "next-intl example"
   },
   "LocaleSwitcher": {
     "label": "Change language",
-    "locale": "{locale, select, de {🇩🇪 Deutsch} en {🇺🇸 English} other {Unknown}}"
+    "locale": "{locale, select, vi {🇻🇳 Tiếng Việt} de {🇩🇪 Deutsch} en {🇺🇸 English} other {Unknown}}"
   },
   "Manifest": {
     "name": "next-intl example"
   },
   "Navigation": {
     "home": "Home",
-    "pathnames": "Pathnames"
+    "catalog": "Catalog",
+    "blogs": "Blogs",
+    "about": "About",
+    "contact": "Contact"
+  },
+
+  "Slideshow": {
+    "shopNow": "Shop Now"
+  },
+
+  "ProductCountDown": {
+    "promotionProducts": "🔥 Promotion Products"
   },
   "NotFoundPage": {
     "description": "Please double-check the browser address bar or use the navigation to go to a known page.",
     "title": "Page not found"
+  },
+  "Footer": {
+    "company": "Company",
+    "aboutUs": "About Us",
+    "careers": "Careers",
+    "blog": "Blog",
+    "support": "Support",
+    "contact": "Contact",
+    "faqs": "FAQs",
+    "shippingReturns": "Shipping & Returns",
+    "legal": "Legal",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "companyName": "YourCompany",
+    "allRightsReserved": "All rights reserved."
+  },
+  "Instagram": {
+    "title": "Follow us On Instagram",
+    "description": "Displays an Instagram feed of your photos from your Instagram account on your website.",
+    "followButton": "Follow Me"
   },
   "PageLayout": {
     "links": {

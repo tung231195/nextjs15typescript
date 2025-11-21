@@ -14,20 +14,31 @@ import Slideshows from "@/views/components/slideshow/Slideshows";
 import InstagramLayout from "@/views/components/instagrams/Instagram";
 
 export const metadata = {
-  title: "Hướng dẫn SEO Next.js: Meta, Open Graph & App Router | MyWebsite",
+  title: "MyWebsite – Mua Sắm Online Uy Tín & Giá Tốt",
   description:
-    "Hướng dẫn tối ưu SEO với App Router, meta description, H1, Open Graph, sitemap và redirects.",
+    "MyWebsite cung cấp các sản phẩm thời trang, điện tử, đồ gia dụng chất lượng cao với giá tốt, giao hàng nhanh và hỗ trợ đổi trả dễ dàng.",
   openGraph: {
-    title: "Tối ưu SEO cho Next.js App Router",
+    title: "MyWebsite – Mua Sắm Online Uy Tín & Giá Tốt",
     description:
-      "Hướng dẫn tối ưu SEO với App Router, meta description, H1, Open Graph, sitemap và redirects.",
-    url: "https://example.com",
-    images: [{ url: "/images/seo-image.jpg", width: 800, height: 450 }],
+      "Khám phá các sản phẩm thời trang, điện tử, đồ gia dụng chất lượng tại MyWebsite. Giao hàng nhanh và hỗ trợ đổi trả 7 ngày.",
+    url: "https://nextjs15typescript.vercel.app",
+    images: [
+      {
+        url: "/images/website-homepage.jpg",
+        width: 1200,
+        height: 630,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
+    title: "MyWebsite – Mua Sắm Online Uy Tín & Giá Tốt",
+    description:
+      "Khám phá các sản phẩm thời trang, điện tử, đồ gia dụng chất lượng tại MyWebsite. Giao hàng nhanh và hỗ trợ đổi trả 7 ngày.",
+    images: ["/images/website-homepage.jpg"],
   },
 };
+
 type TPageProps = {
   params: Promise<{ locale: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;

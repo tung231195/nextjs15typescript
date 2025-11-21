@@ -1,19 +1,18 @@
 "use client";
-import { CartItem, ProductType } from "@/app/types";
+import { ATTRIBUTE_COLOR_ID, ATTRIBUTE_SIZE_ID, CartItem, ProductType } from "@/app/types";
 import { Icon } from "@iconify/react";
 import { motion } from "framer-motion";
 import { Box, Button, CardActions, CardContent, CardMedia, Chip, Typography } from "@mui/material";
 import useCart from "@/app/hooks/useCart";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { groupColorBySize } from "@/app/utils";
+import { generateProductLink, groupColorBySize } from "@/app/utils";
+import { useLocale } from "next-intl";
+import PriceFormat from "./Price";
 
 type TPropProductItem = {
   product: ProductType;
 };
-
-const ATTRIBUTE_COLOR_ID = "68e63089de8746d605fde99d";
-const ATTRIBUTE_SIZE_ID = "68e7c88af04ba84b032132e7";
 
 const ProductItem = ({ product }: TPropProductItem) => {
   const MotionCard = motion(Box);
@@ -30,10 +29,22 @@ const ProductItem = ({ product }: TPropProductItem) => {
       image: product.images?.[0] || "",
     };
     add(payload);
+    setTimeout(() => {
+      const miniCartEl = document.getElementById("mini-cart");
+      if (miniCartEl) {
+        miniCartEl.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }, 50);
   };
+  const locale = useLocale();
 
-  const handleProductPage = (id: string) => router.push(`/catalog/product/${id}`);
+  const categorySlug =
+    typeof product.category === "object" ? (product.category.slug as string) : product.category;
+  const productSlug = product.slug as string;
 
+  const productLink = generateProductLink({ locale, categorySlug, productSlug });
+  console.log("product link", locale, categorySlug, productSlug, productLink);
+  const handleProductPage = (id: string) => router.push(productLink);
   /** Sale logic */
   const isSale = product.discount?.value > 0;
   const variantPrices = product.variants?.map((v) => v.price) || [];
@@ -53,13 +64,16 @@ const ProductItem = ({ product }: TPropProductItem) => {
   return (
     <MotionCard
       whileHover={{ scale: 1.03 }}
-      transition={{ type: "spring", stiffness: 200 }}
+      transition={{ type: "spring", stiffness: 180 }}
       sx={{
         maxWidth: 345,
         mt: 2,
         position: "relative",
         overflow: "hidden",
-        boxShadow: 2,
+        borderRadius: "20px",
+        boxShadow: "0 4px 18px rgba(0,0,0,0.08)",
+        bgcolor: "#fff",
+        cursor: "pointer",
         "&:hover .action": {
           bottom: 0,
           opacity: 1,
@@ -69,7 +83,16 @@ const ProductItem = ({ product }: TPropProductItem) => {
       {/* Image */}
       <CardMedia
         onClick={() => handleProductPage(product._id)}
-        sx={{ height: 240, cursor: "pointer" }}
+        sx={{
+          height: 240,
+          cursor: "pointer",
+          borderTopLeftRadius: "20px",
+          borderTopRightRadius: "20px",
+          transition: "transform 0.35s ease",
+          "&:hover": {
+            transform: "scale(1.04)",
+          },
+        }}
         image={product.images?.[0] || ""}
         title={product.name}
       />
@@ -83,79 +106,110 @@ const ProductItem = ({ product }: TPropProductItem) => {
               : `-${product.discount?.value}$`
           }
           color="error"
-          sx={{ position: "absolute", top: 10, left: 0 }}
+          sx={{
+            position: "absolute",
+            top: 12,
+            left: 12,
+            fontSize: "0.75rem",
+            fontWeight: 600,
+            borderRadius: "8px",
+          }}
         />
       )}
-      <Chip label="New" color="primary" sx={{ position: "absolute", top: 10, right: 0 }} />
+
+      <Chip
+        label="New"
+        color="primary"
+        sx={{
+          position: "absolute",
+          top: 12,
+          right: 12,
+          fontSize: "0.75rem",
+          fontWeight: 600,
+          borderRadius: "8px",
+        }}
+      />
 
       {/* Content */}
-      <CardContent sx={{ textAlign: "center" }}>
-        <Typography gutterBottom variant="h6" fontWeight={600}>
+      <CardContent sx={{ textAlign: "center", p: 2, minHeight: 150 }}>
+        <Typography
+          gutterBottom
+          variant="h6"
+          fontWeight={700}
+          sx={{ mb: 1, fontSize: "1.05rem", minHeight: 48 }}
+        >
           {product.name}
         </Typography>
 
         {/* Color options */}
-        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, justifyContent: "center", mb: 1 }}>
-          {variantAtt.map((v) => (
-            <Box
-              onClick={() => handeChangeAtt(v.color)}
-              key={v.color}
+
+        {variantAtt.length > 0 && (
+          <Box
+            sx={{
+              display: "flex",
+              gap: 1,
+              justifyContent: "center",
+              mb: 1.5,
+              minHeight: "40px", // bắt buộc để giữ layout khi có màu
+              alignItems: "center",
+            }}
+          >
+            {variantAtt.map((v) => (
+              <Box
+                key={v.color}
+                onClick={() => handeChangeAtt(v.color)}
+                sx={{
+                  width: 24,
+                  height: 24,
+                  borderRadius: "50%",
+                  background: v.color,
+                  border: "2px solid #fff",
+                  boxShadow: "0 0 5px rgba(0,0,0,0.2)",
+                  transition: "0.25s",
+                }}
+              />
+            ))}
+          </Box>
+        )}
+        {/* Size */}
+        <Box sx={{ display: "flex", gap: 1, justifyContent: "center", mb: 1 }}>
+          {listSize?.map((ls, i) => (
+            <Button
+              key={i}
+              onClick={() => handleOnSize(ls)}
               sx={{
-                border: "1px solid #ddd",
-                display: "block",
-                borderRadius: "50%",
-                textTransform: "capitalize",
-                zIndex: 9999,
-                background: v.color,
-                width: "30px",
-                height: "30px",
+                minWidth: 34,
+                height: 34,
+                borderRadius: "10px",
+                bgcolor: "grey.900",
+                color: "#fff",
+                fontSize: "0.75rem",
+                padding: 0,
+                "&:hover": { bgcolor: "grey.700" },
               }}
-            ></Box>
+            >
+              {ls}
+            </Button>
           ))}
         </Box>
-        <Box sx={{ display: "flex", gap: 1, justifyContent: "center" }}>
-          {listSize &&
-            listSize.map((ls, i) => {
-              return (
-                <Button
-                  onClick={() => handleOnSize(ls as string)}
-                  key={i}
-                  fullWidth
-                  sx={{
-                    bgcolor: "primary.main",
-                    color: "white",
-                    "&:hover": { bgcolor: "primary.dark" },
-                    width: "30px",
-                  }}
-                >
-                  <Typography sx={{ ml: 1 }}>{ls}</Typography>
-                </Button>
-              );
-            })}
-        </Box>
-        {/* Prices */}
-        <Box sx={{ display: "flex", gap: 1, justifyContent: "center" }}>
-          <Typography
-            sx={{ textDecoration: isSale ? "line-through" : "none" }}
-            variant="subtitle1"
-            fontWeight={700}
-            color="primary"
-          >
-            ${product.price.toFixed(2)} - {minPrice.toFixed(2)}
-          </Typography>
-          {isSale && (
-            <Typography variant="subtitle1" fontWeight={700} color="error">
-              ${product.finalPrice?.toFixed(2)}
-            </Typography>
-          )}
-        </Box>
 
-        <Typography variant="body2" color="text.secondary" noWrap sx={{ mt: 1 }}>
-          {product.description}
-        </Typography>
+        {/* Prices */}
+
+        <Box
+          sx={{
+            display: "flex",
+            gap: 1,
+            justifyContent: "center",
+            mt: 1,
+            height: "32px", // ⭐ CỐ ĐỊNH CHỖ GIÁ
+            alignItems: "center",
+          }}
+        >
+          <PriceFormat amount={product.price} saleAmount={product.discount} locale={locale} />
+        </Box>
       </CardContent>
 
-      {/* Hover Actions */}
+      {/* Actions */}
       <CardActions
         className="action"
         sx={{
@@ -165,20 +219,23 @@ const ProductItem = ({ product }: TPropProductItem) => {
           width: "100%",
           display: "flex",
           gap: 1,
-          bgcolor: "rgba(255,255,255,0.9)",
-          backdropFilter: "blur(6px)",
-          opacity: 0,
-          transition: "all 0.35s ease",
           p: 1.5,
+          borderBottomLeftRadius: "20px",
+          borderBottomRightRadius: "20px",
+          bgcolor: "rgba(255,255,255,0.90)",
+          backdropFilter: "blur(10px)",
+          transition: "all .35s ease",
+          opacity: 0,
         }}
       >
         <Button
           fullWidth
           onClick={() => handleAddToCart(product)}
           sx={{
-            bgcolor: "grey.200",
+            bgcolor: "black",
             color: "white",
-            "&:hover": { bgcolor: "primary.light" },
+            borderRadius: "12px",
+            "&:hover": { bgcolor: "#333" },
           }}
         >
           <Icon icon="flowbite:cart-outline" width={22} height={22} />
@@ -187,8 +244,9 @@ const ProductItem = ({ product }: TPropProductItem) => {
         <Button
           fullWidth
           sx={{
-            bgcolor: "grey.200",
-            "&:hover": { bgcolor: "grey.300" },
+            bgcolor: "grey.300",
+            borderRadius: "12px",
+            "&:hover": { bgcolor: "grey.400" },
           }}
         >
           <Icon icon="flowbite:heart-outline" width={22} height={22} />
@@ -197,8 +255,9 @@ const ProductItem = ({ product }: TPropProductItem) => {
         <Button
           fullWidth
           sx={{
-            bgcolor: "grey.200",
-            "&:hover": { bgcolor: "grey.300" },
+            bgcolor: "grey.300",
+            borderRadius: "12px",
+            "&:hover": { bgcolor: "grey.400" },
           }}
         >
           <Icon icon="lets-icons:view-light" width={22} height={22} />
