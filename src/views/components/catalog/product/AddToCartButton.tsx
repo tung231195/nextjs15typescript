@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Snackbar } from "@mui/material";
+import { Button, Typography, Box } from "@mui/material";
 import { useState } from "react";
 import { ProductVariant, ProductAttributeValue } from "@/app/types";
 import useCart from "@/app/hooks/useCart";
@@ -10,13 +10,12 @@ interface Props {
 }
 
 export default function AddToCartButton({ variant }: Props) {
-  const [open, setOpen] = useState(false);
+  const [added, setAdded] = useState(false);
   const { add } = useCart();
 
   const handleAdd = () => {
     if (!variant || !variant.sku || variant.price === undefined || !variant._id) return;
 
-    // Tạo object chắc chắn tất cả field required đều có giá trị
     const variantP: {
       name: string;
       quantity: number;
@@ -30,32 +29,34 @@ export default function AddToCartButton({ variant }: Props) {
       price: variant.price,
       product: variant._id,
       attributes: variant.attributes,
-      image: "", // bạn có thể map image nếu có
+      image: "", // map image nếu có
     };
 
     add(variantP);
-    setOpen(true);
+
+    // Show message ngay button
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1500);
   };
 
   return (
-    <>
+    <Box sx={{ display: "inline-flex", flexDirection: "column", alignItems: "center", gap: 0.5 }}>
       <Button
         variant="contained"
         color="primary"
         size="large"
         sx={{ borderRadius: 2 }}
         onClick={handleAdd}
-        disabled={!variant} // ✅ disable nếu variant null
+        disabled={!variant}
       >
         Add to Cart
       </Button>
 
-      <Snackbar
-        open={open}
-        autoHideDuration={1500}
-        onClose={() => setOpen(false)}
-        message="Added to cart!"
-      />
-    </>
+      {added && (
+        <Typography variant="caption" color="success.main">
+          Added to cart!
+        </Typography>
+      )}
+    </Box>
   );
 }

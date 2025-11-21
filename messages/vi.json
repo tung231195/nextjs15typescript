@@ -1,0 +1,77 @@
+{
+  "Error": {
+    "description": "<p>Rất tiếc, đã xảy ra lỗi.</p><p>Bạn có thể thử <retry>tải lại trang</retry> bạn đang xem.</p>",
+    "title": "Đã xảy ra lỗi!"
+  },
+  "IndexPage": {
+    "description": "Đây là ví dụ cơ bản minh họa cách sử dụng <code>next-intl</code> với Next.js App Router. Hãy thử thay đổi ngôn ngữ ở góc trên bên phải và xem nội dung thay đổi như thế nào.",
+    "title": "Ví dụ next-intl",
+    "newProducts": "Sản phẩm mới",
+    "BlogList": "Tin Tức Mới"
+  },
+  "LocaleLayout": {
+    "title": "Ví dụ next-intl"
+  },
+  "LocaleSwitcher": {
+    "label": "Thay đổi ngôn ngữ",
+    "locale": "{locale, select, vi {🇻🇳 Tiếng Việt} en {🇺🇸 English} de {🇩🇪 Deutsch} other {Không xác định}}"
+  },
+  "Manifest": {
+    "name": "Ví dụ next-intl"
+  },
+  "Navigation": {
+    "home": "Trang chủ",
+    "catalog": "Danh mục",
+    "blogs": "Blog",
+    "about": "Giới thiệu",
+    "contact": "Liên hệ"
+  },
+  "Slideshow": {
+    "shopNow": "Mua ngay"
+  },
+  "ProductCountDown": {
+    "promotionProducts": "🔥 Sản phẩm khuyến mãi"
+  },
+  "Footer": {
+    "company": "Công ty",
+    "aboutUs": "Về chúng tôi",
+    "careers": "Tuyển dụng",
+    "blog": "Blog",
+    "support": "Hỗ trợ",
+    "contact": "Liên hệ",
+    "faqs": "Câu hỏi thường gặp",
+    "shippingReturns": "Giao hàng & Trả hàng",
+    "legal": "Pháp lý",
+    "privacyPolicy": "Chính sách bảo mật",
+    "termsOfService": "Điều khoản dịch vụ",
+    "companyName": "Công ty của bạn",
+    "allRightsReserved": "Bảo lưu mọi quyền"
+  },
+  "Instagram": {
+    "title": "Theo dõi chúng tôi trên Instagram",
+    "description": "Hiển thị các bức ảnh từ tài khoản Instagram của bạn trên trang web.",
+    "followButton": "Theo dõi tôi"
+  },
+  "NotFoundPage": {
+    "description": "Vui lòng kiểm tra lại thanh địa chỉ của trình duyệt hoặc dùng menu điều hướng để truy cập trang hợp lệ.",
+    "title": "Không tìm thấy trang"
+  },
+  "PageLayout": {
+    "links": {
+      "docs": {
+        "description": "Tìm hiểu thêm về next-intl trong tài liệu chính thức.",
+        "href": "https://next-intl.dev",
+        "title": "Tài liệu"
+      },
+      "source": {
+        "description": "Xem mã nguồn của ví dụ này trên GitHub.",
+        "href": "https://github.com/amannn/next-intl/tree/main/examples/example-app-router",
+        "title": "Mã nguồn"
+      }
+    }
+  },
+  "PathnamesPage": {
+    "description": "<p>Các đường dẫn cũng được quốc tế hóa.</p><p>Nếu bạn đang dùng ngôn ngữ mặc định (English), bạn sẽ thấy <code>/en/pathnames</code> trên thanh địa chỉ của trang này.</p><p>Nếu bạn đổi sang tiếng Đức, URL cũng sẽ được bản địa hóa tương ứng (<code>/de/pfadnamen</code>).</p>",
+    "title": "Đường dẫn"
+  }
+}

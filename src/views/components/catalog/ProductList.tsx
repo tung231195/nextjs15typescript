@@ -1,19 +1,39 @@
 "use client";
 import ProductItem from "./ProductItem";
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { ProductType } from "@/app/types";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
+import { useTranslations } from "next-intl";
 type TPropProductList = {
   products: ProductType[];
 };
 const ProductList = (props: TPropProductList) => {
+  const t = useTranslations("IndexPage");
+
   const { products } = props;
   return (
     <>
-      <Typography sx={{ padding: "25px 0" }} variant="h6" fontWeight={600}>
-        Product List
-      </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          mt: 4,
+          mb: 2,
+        }}
+      >
+        <Typography
+          variant="h5"
+          fontWeight={700}
+          sx={{
+            background: "linear-gradient(90deg, #000, #000)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
+        >
+          {t("newProducts")}
+        </Typography>
+      </Box>
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
         spaceBetween={20}

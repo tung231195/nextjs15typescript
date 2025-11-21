@@ -5,7 +5,8 @@ import Image from "next/image";
 import { useState } from "react";
 
 export default function ProductGallery({ images }: { images: string[] }) {
-  const defaultImage = images && images[0] ? images[0] : "/images/cms/1.jpg";
+  console.log("image product", images);
+  const defaultImage = images && images[0];
   const [selectedImage, setSelectedImage] = useState<string>(defaultImage);
 
   return (
@@ -20,21 +21,23 @@ export default function ProductGallery({ images }: { images: string[] }) {
           mb: 2,
         }}
       >
-        <Image
-          src={selectedImage ? selectedImage : defaultImage}
-          alt="product"
-          width={600}
-          height={400}
-          style={{ objectFit: "cover" }}
-        />
+        {defaultImage && (
+          <Image
+            src={selectedImage ? selectedImage : defaultImage}
+            alt="product"
+            width={600}
+            height={400}
+            style={{ objectFit: "cover" }}
+          />
+        )}
       </Box>
 
       {/* Thumbnails */}
       <Box sx={{ display: "flex", gap: 1 }}>
         {images &&
-          images.map((img) => (
+          images.map((img, index) => (
             <Box
-              key={img}
+              key={index}
               sx={{
                 borderRadius: 2,
                 overflow: "hidden",

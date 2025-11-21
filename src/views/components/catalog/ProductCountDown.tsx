@@ -5,23 +5,40 @@ import ProductSaleItem from "./product/ProductSaleItem";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import { useTranslations } from "next-intl";
 
 type TPropSaleProduct = {
   productSale: ProductType[];
 };
 const ProductCountDown = ({ productSale }: TPropSaleProduct) => {
+  const t = useTranslations("ProductCountDown");
   return (
     <>
-      <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
-        <Typography sx={{ padding: "26px 0" }} variant="h6" fontWeight={600}>
-          Promotion Products
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          mt: 4,
+          mb: 2,
+        }}
+      >
+        <Typography
+          variant="h5"
+          fontWeight={700}
+          sx={{
+            background: "linear-gradient(90deg, #ff4b2b, #ff416c)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
+        >
+          {t("promotionProducts")}
         </Typography>
       </Box>
       <Grid container spacing={2}>
         <Grid size={{ md: 7 }}>
           <CardMedia
-            sx={{ height: 360 }}
-            image="/images/salebanner.jpg_.avif"
+            sx={{ height: 425 }}
+            image="/images/banner-thoi-trang-nu-3.jpg"
             title="dealer product"
           />
         </Grid>
@@ -31,7 +48,7 @@ const ProductCountDown = ({ productSale }: TPropSaleProduct) => {
             spaceBetween={20}
             slidesPerView={1}
             navigation
-            pagination={{ clickable: true }}
+            pagination={false}
             autoplay={{ delay: 3000, disableOnInteraction: false }}
             loop
             breakpoints={{

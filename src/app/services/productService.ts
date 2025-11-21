@@ -43,15 +43,19 @@ export const getCategoryProducts = async ({
   minPrice,
   maxPrice,
   variants,
+  page,
+  limit,
 }: {
   slug: string;
   minPrice?: number;
   maxPrice?: number;
   variants?: AttributeVariant[];
+  page?: number;
+  limit?: number;
 }) => {
   try {
     const res = await customAxios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/catalog/${slug}`, {
-      params: { minPrice, maxPrice, variants: variants },
+      params: { minPrice, maxPrice, variants: variants, page, limit: limit },
     });
     return res.data;
   } catch (e: unknown) {
@@ -109,7 +113,26 @@ const getProductsRelate = async (id: string, category: string) => {
 /** get product */
 const getProductService = async (id: string) => {
   try {
-    const products = await customAxios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/products/${id}`);
+    const products = await customAxios.get(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/products/id/${id}`,
+    );
+    return products.data;
+  } catch (e: unknown) {
+    if (e instanceof Error) {
+      console.log(e.message);
+    } else {
+      console.log("Unknown error", e);
+    }
+  }
+
+  //return login;
+};
+
+const getProductServiceBySlug = async (slug: string) => {
+  try {
+    const products = await customAxios.get(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/products/slug/${slug}`,
+    );
     return products.data;
   } catch (e: unknown) {
     if (e instanceof Error) {
@@ -178,4 +201,5 @@ export {
   getProductService,
   getProductsSaleService,
   getProductsRelate,
+  getProductServiceBySlug,
 };

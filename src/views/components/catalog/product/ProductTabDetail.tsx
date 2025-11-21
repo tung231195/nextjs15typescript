@@ -4,6 +4,7 @@ import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import { ProductType } from "@/app/types";
 import { Typography } from "@mui/material";
+import { htmlToText } from "@/app/utils";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -59,7 +60,7 @@ export default function ProductTabDetail(props: TPropProductTab) {
         <Typography> {product.name}</Typography>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        {product.description}
+        {product?.description && htmlToText(product?.description)}
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
         Product Reviews

@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
@@ -8,36 +10,28 @@ import useCart from "../hooks/useCart";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store";
 import { getCartAction } from "../store/slices/cartSlice";
-import { useRouter } from "next/navigation";
+import { useLocale } from "next-intl";
+import PriceFormat from "@/views/components/catalog/Price";
+import Link from "next/link";
 
 export default function MiniCart() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const router = useRouter();
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => setAnchorEl(event.currentTarget);
+  const handleClose = () => setAnchorEl(null);
+
   const dispatch = useDispatch<AppDispatch>();
   React.useEffect(() => {
     dispatch(getCartAction());
   }, [dispatch]);
-  const { cartItems, subTotalPrice, totalQty, remove } = useCart();
-  /*** hanldle  */
-  const gotoCheckout = () => {
-    router.push("/checkout");
-    return;
-  };
 
-  const gotoCart = () => {
-    router.push("/cart");
-    return;
-  };
+  const locale = useLocale();
+  const { cartItems, subTotalPrice, totalQty, remove } = useCart();
 
   return (
-    <div>
+    <div id="mini-cart">
+      {/* Trigger Button */}
       <Button
         sx={{ color: "#fff" }}
         id="fade-button"
@@ -47,74 +41,88 @@ export default function MiniCart() {
         onClick={handleClick}
       >
         <Icon icon="mynaui:cart" width="24" height="24" />
-        <Typography>({totalQty ? totalQty : 0})</Typography>
+        <Typography sx={{ ml: 0.5 }}>({totalQty ?? 0})</Typography>
       </Button>
+
+      {/* Dropdown Menu */}
       <Menu
         id="fade-menu"
-        slotProps={{
-          list: {
-            "aria-labelledby": "fade-button",
-          },
-        }}
+        slotProps={{ list: { "aria-labelledby": "fade-button" } }}
         slots={{ transition: Fade }}
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
       >
-        <Box sx={{ width: 300 }}>
-          {cartItems &&
-            cartItems.length > 0 &&
-            cartItems.map((product) => {
-              return (
-                <Box key={`cart_${product.product}`}>
+        <Box sx={{ width: 300, maxHeight: 400, overflowY: "auto", p: 1 }}>
+          {cartItems?.length ? (
+            <>
+              {cartItems.map((product) => (
+                <Box key={`cart_${product.product}`} sx={{ mb: 1 }}>
                   <Box
                     sx={{
                       display: "flex",
                       alignItems: "center",
                       width: "100%",
-                      mb: 2,
-                      padding: "10px",
+                      padding: "8px",
                     }}
                   >
                     <CardMedia
-                      sx={{ height: 50, width: 50 }}
+                      sx={{ height: 50, width: 50, borderRadius: 1 }}
                       image={`${process.env.NEXT_PUBLIC_SOCKET_URL}${product.image}` || ""}
                       title={product.name}
                     />
-                    <Box sx={{ display: "flex", flexDirection: "column", padding: "10px 10px" }}>
-                      <Typography variant="body1">{product.name}</Typography>
-                      <Typography variant="body1">{product.price}</Typography>
+                    <Box sx={{ display: "flex", flexDirection: "column", ml: 1, flexGrow: 1 }}>
+                      <Typography variant="body1" noWrap>
+                        {product.name}
+                      </Typography>
+                      <PriceFormat
+                        amount={product.price}
+                        saleAmount={product.discount}
+                        locale={locale}
+                      />
                     </Box>
                     <Icon
                       onClick={() => remove(product.product)}
                       icon="line-md:remove"
                       width="24"
                       height="24"
+                      style={{ cursor: "pointer" }}
+                      aria-label="Remove item"
                     />
                   </Box>
                   <Divider />
                 </Box>
-              );
-            })}
-          <Box>
-            <Typography
-              sx={{
-                width: "100%",
-                textAlign: "center",
-                color: "red",
-                display: "block",
-                padding: "10px 0",
-              }}
-            >
-              Sub Total: {subTotalPrice}
-            </Typography>
-            <Button onClick={gotoCart} fullWidth variant="outlined">
-              Go to cart
-            </Button>
-            <Button onClick={gotoCheckout} fullWidth variant="outlined" sx={{ mt: 2 }}>
-              checkout now
-            </Button>
-          </Box>
+              ))}
+
+              <Box sx={{ mt: 1 }}>
+                <Typography sx={{ width: "100%", textAlign: "center", color: "red", mb: 1 }}>
+                  Sub Total: {subTotalPrice ?? 0}
+                </Typography>
+
+                <Button
+                  component={Link}
+                  href="/cart"
+                  fullWidth
+                  variant="outlined"
+                  sx={{ textDecoration: "none", mb: 1 }}
+                >
+                  Go to cart
+                </Button>
+
+                <Button
+                  component={Link}
+                  href="/checkout"
+                  fullWidth
+                  variant="outlined"
+                  sx={{ textDecoration: "none" }}
+                >
+                  Checkout now
+                </Button>
+              </Box>
+            </>
+          ) : (
+            <Typography sx={{ textAlign: "center", p: 2 }}>Your cart is empty</Typography>
+          )}
         </Box>
       </Menu>
     </div>

@@ -53,7 +53,7 @@ const Sidebar = ({
   //const variantAttributes = attributes.filter((a) => a.type === "enum");
 
   return (
-    <Box sx={{ width: 260, borderRight: "1px solid #e0e0e0", p: 2 }}>
+    <Box>
       <Typography variant="h6" fontWeight={700}>
         Categories
       </Typography>
