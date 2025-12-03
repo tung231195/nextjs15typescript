@@ -25,6 +25,7 @@ const textVariant: Variants = {
 };
 
 const Slideshows = ({ slideshows }: TPropSlideshow) => {
+  console.log("slideshows", slideshows);
   const controls = useAnimation();
   const [activeIndex, setActiveIndex] = useState(0);
   const t = useTranslations("Slideshow");

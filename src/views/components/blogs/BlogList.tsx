@@ -17,7 +17,7 @@ import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import { useTranslations } from "next-intl";
 
 //const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
-const NOTIF = process.env.NEXT_PUBLIC_BACKEND_URL || "https://nodejs2015typescript.onrender.com";
+const NOTIF = process.env.NEXT_PUBLIC_SOCKET_URL || "https://nodejs2015typescript.onrender.com";
 
 export default function BlogList() {
   const t = useTranslations("IndexPage");

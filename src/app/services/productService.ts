@@ -8,7 +8,7 @@ export type AttributeVariant = {
 /** get products */
 const getProductsService = async () => {
   try {
-    const products = await customAxios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/products`);
+    const products = await customAxios.get(`products`);
     return products.data;
   } catch (e: unknown) {
     if (e instanceof Error) {
@@ -23,9 +23,7 @@ const getProductsService = async () => {
 
 export const getProductsCategoryService = async (categoryId: string) => {
   try {
-    const res = await customAxios.get(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/products/category/${categoryId}`,
-    );
+    const res = await customAxios.get(`products/category/${categoryId}`);
     return res.data;
   } catch (error) {
     if (error instanceof Error) {
@@ -54,7 +52,7 @@ export const getCategoryProducts = async ({
   limit?: number;
 }) => {
   try {
-    const res = await customAxios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/catalog/${slug}`, {
+    const res = await customAxios.get(`catalog/${slug}`, {
       params: { minPrice, maxPrice, variants: variants, page, limit: limit },
     });
     return res.data;
@@ -66,9 +64,7 @@ export const getCategoryProducts = async ({
 
 export const getPriceRange = async (slug: string) => {
   try {
-    const res = await customAxios.get(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/catalog/${slug}/price-range`,
-    );
+    const res = await customAxios.get(`catalog/${slug}/price-range`);
     return res.data;
   } catch (e: unknown) {
     if (e instanceof Error) console.error(e.message);
@@ -79,7 +75,7 @@ export const getPriceRange = async (slug: string) => {
 /** get products Sale */
 const getProductsSaleService = async () => {
   try {
-    const products = await customAxios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/products/sale`);
+    const products = await customAxios.get(`products/sale`);
     return products.data;
   } catch (e: unknown) {
     if (e instanceof Error) {
@@ -95,10 +91,7 @@ const getProductsSaleService = async () => {
 /** get products Relates */
 const getProductsRelate = async (id: string, category: string) => {
   try {
-    const products = await customAxios.get(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/products/${id}/relate`,
-      { params: { category } },
-    );
+    const products = await customAxios.get(`products/${id}/relate`, { params: { category } });
     return products.data;
   } catch (e: unknown) {
     if (e instanceof Error) {
@@ -113,9 +106,7 @@ const getProductsRelate = async (id: string, category: string) => {
 /** get product */
 const getProductService = async (id: string) => {
   try {
-    const products = await customAxios.get(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/products/id/${id}`,
-    );
+    const products = await customAxios.get(`products/id/${id}`);
     return products.data;
   } catch (e: unknown) {
     if (e instanceof Error) {
@@ -130,9 +121,7 @@ const getProductService = async (id: string) => {
 
 const getProductServiceBySlug = async (slug: string) => {
   try {
-    const products = await customAxios.get(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/products/slug/${slug}`,
-    );
+    const products = await customAxios.get(`products/slug/${slug}`);
     return products.data;
   } catch (e: unknown) {
     if (e instanceof Error) {
@@ -148,7 +137,7 @@ const getProductServiceBySlug = async (slug: string) => {
 /** add product */
 const addProductsService = async (data: Product) => {
   try {
-    const products = await customAxios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/products`, data);
+    const products = await customAxios.post(`products`, data);
     return products.data;
   } catch (e: unknown) {
     const error = e as AxiosError<{ message: string }>;
@@ -165,10 +154,7 @@ const addProductsService = async (data: Product) => {
 const updateProductService = async (data: ProductType) => {
   console.log("data update", data);
   try {
-    const products = await customAxios.put(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/products/${data._id}`,
-      data,
-    );
+    const products = await customAxios.put(`products/${data._id}`, data);
     return products.data;
   } catch (e: unknown) {
     if (e instanceof Error) {
@@ -181,9 +167,7 @@ const updateProductService = async (data: ProductType) => {
 /** delete product */
 const deleteProductService = async (_id: string) => {
   try {
-    const products = await customAxios.delete(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/products/${_id}`,
-    );
+    const products = await customAxios.delete(`products/${_id}`);
     return products.data;
   } catch (e: unknown) {
     if (e instanceof Error) {

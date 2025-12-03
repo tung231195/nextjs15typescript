@@ -1,3 +1,4 @@
+"use client";
 import { ProductType } from "@/app/types";
 import {
   Box,
@@ -80,9 +81,9 @@ const ProductSaleItem = ({ product }: TPropSaleItem) => {
           )}
 
           {/* Sale description */}
-          <Typography variant="body2" sx={{ mt: 1, color: "text.secondary" }}>
+          {/* <Typography variant="body2" sx={{ mt: 1, color: "text.secondary" }}>
             Ends at: {product.endDate ? new Date(product.endDate).toLocaleString() : "Unknown"}
-          </Typography>
+          </Typography> */}
 
           {/* Countdown */}
           {product.endDate && (

@@ -1,0 +1,58 @@
+services:
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
+      timeout: 3s
+      retries: 5
+  backend:
+    image: nextjs-backend:dev
+    build:
+      context: ./nodejs2015typescript
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./nodejs2015typescript:/nodejs2025
+      - ./nodejs2015typescript/uploads:/nodejs2025/uploads # FIX uploads
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env.docker
+    environment:
+      NODE_ENV: development
+      IS_DOCKER: "true"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  frontend:
+    image: nextjs-frontend:dev
+    build:
+      context: ./
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./:/nextjs2025
+      - /nextjs2025/node_modules
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.docker
+    environment:
+      NODE_ENV: development
+    depends_on:
+      - backend
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - backend
+      - frontend

@@ -8,13 +8,10 @@ let socket: Socket | null = null;
 // 👉 Hàm khởi tạo socket (singleton)
 const getSocket = () => {
   if (!socket) {
-    socket = io(
-      process.env.NEXT_PUBLIC_BACKEND_URL || "https://nodejs2015typescript.onrender.com",
-      {
-        transports: ["websocket"],
-        autoConnect: false, // tránh kết nối sớm
-      },
-    );
+    socket = io(process.env.NEXT_PUBLIC_SOCKET_URL || "https://nodejs2015typescript.onrender.com", {
+      transports: ["websocket"],
+      autoConnect: false, // tránh kết nối sớm
+    });
   }
   return socket;
 };

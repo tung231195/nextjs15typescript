@@ -12,10 +12,14 @@ const config: NextConfig = {
     domains: ["localhost"], // backend domain
   },
   async rewrites() {
+    const BACKEND_URL =
+      process.env.IS_DOKER === "true"
+        ? process.env.NEXT_PUBLIC_BACKEND_DOCKER_URL
+        : process.env.NEXT_PUBLIC_BACKEND_URL;
     return [
       {
         source: "/uploads/:path*",
-        destination: `${process.env.NEXT_PUBLIC_BACKEND_URL}/uploads/:path*`, // proxy từ frontend -> backend
+        destination: `${BACKEND_URL}/uploads/:path*`, // proxy từ frontend -> backend
       },
     ];
   },

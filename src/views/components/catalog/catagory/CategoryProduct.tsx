@@ -57,7 +57,7 @@ const CategoryProduct = ({ products: initialProducts, slug, facets }: TPropCateg
   const handlePriceChange = async (range: number[]) => {
     setPriceRange(range);
   };
-  // ✅ Fetch min-max price 1 lần khi slug đổi
+  // Fetch min-max price 1 lần khi slug đổi
   useEffect(() => {
     const fetchPriceRangeDB = async () => {
       try {

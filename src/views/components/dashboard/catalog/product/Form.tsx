@@ -81,7 +81,7 @@ const ProductForm = (props: TPropProductForm) => {
     variants: ProductVariant[];
     attributes: ProductAttributeValue[];
   };
-  // ✅ Định nghĩa schema cho các phần con trước
+  // Định nghĩa schema cho các phần con trước
   const productAttributeValueSchema: yup.ObjectSchema<ProductAttributeValue> = yup.object({
     attribute: yup.string().required("Attribute is required"),
     valueString: yup.string().optional(),
@@ -98,7 +98,7 @@ const ProductForm = (props: TPropProductForm) => {
     images: yup.array().of(yup.string().defined()).optional(),
   });
 
-  // ✅ Schema chính
+  // Schema chính
   const schema: yup.ObjectSchema<FormData> = yup.object({
     name: yup.string().required("The Title is required"),
     type: yup.mixed<"simple" | "variant">().oneOf(["simple", "variant"]).required(),
@@ -267,7 +267,7 @@ const ProductForm = (props: TPropProductForm) => {
       return { ...variant, sku: newSku };
     });
 
-    // ✅ Chỉ gọi setValue nếu có ít nhất 1 variant thay đổi SKU
+    // Chỉ gọi setValue nếu có ít nhất 1 variant thay đổi SKU
     const hasChange = updatedVariants.some((v, i) => v.sku !== watchVariants[i]?.sku);
 
     if (hasChange) {
