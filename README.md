@@ -1,6 +1,8 @@
 # E-Commerce & Blog Platform
 
-> Full-featured E-commerce website with Blog functionality including real-time likes and comments via WebSocket, built with TypeScript and MUI.
+> Full-featured E-commerce website with Blog system, real-time likes & comments using WebSocket. Built with **TypeScript**, **React**, **Node.js**, **MUI**, **Socket.io**, and **MongoDB**.
+
+---
 
 ## Table of Contents
 
@@ -8,21 +10,25 @@
 - [Features](#features)
 - [Tech Stack](#tech-stack)
 - [Setup & Run](#setup--run)
+- [Production Docker Build & Run](#production-docker-build--run)
+- [Docker (Dev Mode)](#docker-dev-mode)
+- [Database & Environment Setup](#database--environment-setup)
 - [Usage](#usage)
 - [Screenshots](#screenshots)
 - [Contributing](#contributing)
+- [Contact](#contact)
 
 ---
 
 ## Overview
 
-This project is a **full-stack E-commerce platform** with an integrated blog.
-It includes standard e-commerce features (product listing, cart, checkout) and a blog system where users can **like and comment in real-time** using WebSocket.
+This project is a **full-stack E-commerce platform** integrated with a full Blog system. It supports real-time interactions using WebSocket.
 
-Purpose:
+### Purpose
 
-- Provide a complete e-commerce solution for online shopping.
-- Include a blog section to engage users with interactive content.
+- Provide a complete online shopping system.
+- Offer a blog platform for better user engagement.
+- Support real-time like + comment interactions.
 
 ---
 
@@ -30,74 +36,141 @@ Purpose:
 
 ### E-Commerce
 
-- Product listing with categories and filters
-- Product details page
+- Product listing, filtering, categories
+- Product detail page
 - Shopping cart & checkout
 - User authentication (signup/login)
+- Forgot Password & Reset Password (email-based)
+- Send email notifications
 - Order management
-- Admin dashboard for managing products, orders, users,blogs, dashboards, customers, payments, shippings
+- Admin Dashboard
+  - Manage products
+  - Manage orders
+  - Manage users
+  - Manage blog posts
+  - Manage payments & shipping methods
 
 ### Blog
 
-- Create, edit, delete posts (admin)
-- View posts (users)
-- Real-time likes and comments using **Socket.io**
-- Comment replies and notifications
+- Admin can create, edit, delete posts
+- Users can view posts
+- Real-time likes & comments (**Socket.io**)
+- Nested comment replies
+- Real-time notifications
 
 ### Other
 
 - Responsive UI with **Material-UI (MUI)**
-- Secure user authentication (JWT)
+- JWT Authentication (Access + Refresh Tokens)
 - Error handling & validations
-- Written entirely in **TypeScript**
+- Full **TypeScript** support
 
 ---
 
 ## Tech Stack
 
-- Frontend: **React.js + TypeScript + MUI**
-- Backend: **Node.js + Express.js + TypeScript + Socket.io**
-- Database: **MongoDB**
-- Authentication: **JWT**
-- Tools: Git, Docker, VSCode
-- Deployment: Optional Vercel / Render for frontend, Heroku / Docker for backend
+- **Frontend:** React.js, MUI, TypeScript
+- **Backend:** Node.js, Express.js, TypeScript, Socket.io
+- **Database:** MongoDB (Atlas or local)
+- **Authentication:** JWT
+- **Dev Tools:** Docker, Git, VSCode
+- **Deployment:** Docker, Vercel/Render/Heroku optional
 
 ---
 
 ## Setup & Run
 
-Follow these steps to run the project locally:
+Run locally without Docker:
 
 ```bash
 # Clone the repo
 git clone https://github.com/tung231195/nextjs15typescript.git
 cd nextjs15typescript
 
-# Install backend dependencies
+# Backend setup
 cd backend
 npm install
-
-# Start backend server
 npm run dev
 
-# Install frontend dependencies
+# Frontend setup
 cd ../frontend
 npm install
-
-# Start frontend server
 npm start
 ```
 
-### Database Setup
+---
 
-- MongoDB connection string: add `.env` file in `backend/` with:
+## Production Docker Build & Run
+
+```bash
+# Build images
+docker-compose build
+
+# Run containers
+docker-compose up
+
+# Detached mode
+docker-compose up -d
+```
+
+Frontend → http://localhost:3000  
+Backend → http://localhost:5000
+
+---
+
+## Docker (Dev Mode)
+
+Enable hot reload for backend & frontend.
+
+Run:
+
+```bash
+docker-compose -f docker-compose.dev.yml up --build
+```
+
+---
+
+## Database & Environment Setup
+
+Create a `.env` file inside **backend/**:
 
 ```
-MONGO_URI=your_mongodb_uri
-JWT_SECRET=your_secret_key
+FRONTEND_ORIGIN=http://localhost:3000
+BACKEND_ORIGIN=http://localhost:5000
+MONGO_URI=<your_mongodb_uri>
+PORT=5000
+JWT_SECRET=<your_jwt_secret>
+JWT_REFRESH_SECRET=<your_jwt_refresh_secret>
+PAYPAL_CLIENT_ID=<your_paypal_client_id>
+PAYPAL_CLIENT_SECRET=<your_paypal_client_secret>
+GOOGLE_CLIENT_ID=<your_google_client_id>
+GOOGLE_CLIENT_SECRET=<your_google_client_secret>
+NODE_ENV=developer
+FB_CLIENT_ID=<your_facebook_client_id>
+FB_CLIENT_SECRET=<your_facebook_client_secret>
+STRIPE_SECRET_KEY=<your_stripe_secret_key>
+STRIPE_WEBHOOK_SECRET=<your_stripe_webhook_secret>
+
+MOMO_PARTNER_CODE=<your_momo_partner_code>
+MOMO_ACCESS_KEY=<your_momo_access_key>
+MOMO_SECRET_KEY=<your_momo_secret_key>
+MOMO_RETURN_URL=http://localhost:3000/momo-return
+MOMO_NOTIFY_URL=http://localhost:3000/api/momo-webhook
+
+VNP_TMNCODE=<your_vnp_tmncode>
+VNP_HASHSECRET=<your_vnp_hashsecret>
+VNP_URL=https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
+VNP_RETURN_URL=http://localhost:3000/payment/result
+
+SMTP_HOST=<your_smtp_host>
+SMTP_PORT=<your_smtp_port>
+SMTP_USERNAME=<your_smtp_username>
+SMTP_PASSWORD=<your_smtp_password>
+REDIS_URL=redis://127.0.0.1:6379
+IS_DOCKER=false
 ```
 
-- Optional: run seed script for sample products and blog posts:
+Optional: seed database
 
 ```bash
 npm run seed
@@ -107,30 +180,33 @@ npm run seed
 
 ## Usage
 
-- Access the website: `http://localhost:3000`
-- Create a user account and login
-- Browse products, add to cart, checkout
-- Visit blog section, like and comment on posts in real-time
+- Open `http://localhost:3000`
+- Register/login
+- Reset password via email
+- Browse products & checkout
+- Interact with blog posts in real-time
 
 ---
 
 ## Screenshots
 
-_Add screenshots of key pages (optional but recommended)_
+_(Optional, recommended)_
 
-- Home page: ![Home](./screenshots/home.png)
-- Product page: ![Product](./screenshots/product.png)
-- Blog page with live comments: ![Blog](./screenshots/blog.png)
+- Home page
+- Product page
+- Blog with real-time comments
 
 ---
 
 ## Contributing
 
-- Contributions are welcome!
-- Please fork the repo, make changes, and create a pull request.
+- Fork the repo
+- Create your feature branch
+- Submit pull request
 
 ---
 
 ## Contact
 
-- Kenny Danh – [Email](mailto:kennydanh11195@gmail.com)
+**Kenny Danh**  
+📧 Email: kennydanh11195@gmail.com
