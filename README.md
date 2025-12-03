@@ -135,39 +135,28 @@ docker-compose -f docker-compose.dev.yml up --build
 Create a `.env` file inside **backend/**:
 
 ```
-FRONTEND_ORIGIN=http://localhost:3000
-BACKEND_ORIGIN=http://localhost:5000
-MONGO_URI=<your_mongodb_uri>
-PORT=5000
-JWT_SECRET=<your_jwt_secret>
-JWT_REFRESH_SECRET=<your_jwt_refresh_secret>
-PAYPAL_CLIENT_ID=<your_paypal_client_id>
-PAYPAL_CLIENT_SECRET=<your_paypal_client_secret>
-GOOGLE_CLIENT_ID=<your_google_client_id>
-GOOGLE_CLIENT_SECRET=<your_google_client_secret>
-NODE_ENV=developer
-FB_CLIENT_ID=<your_facebook_client_id>
-FB_CLIENT_SECRET=<your_facebook_client_secret>
-STRIPE_SECRET_KEY=<your_stripe_secret_key>
-STRIPE_WEBHOOK_SECRET=<your_stripe_webhook_secret>
+# App URLs
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
+NEXT_PUBLIC_BASE_URL_NGOX=YOUR_NGROK_URL
+NEXT_PUBLIC_BACKEND_URL=http://localhost:5000
+NEXT_PUBLIC_SOCKET_URL=http://localhost:5000
+NEXT_PUBLIC_SERVER_URL=http://localhost:5000/api
 
-MOMO_PARTNER_CODE=<your_momo_partner_code>
-MOMO_ACCESS_KEY=<your_momo_access_key>
-MOMO_SECRET_KEY=<your_momo_secret_key>
-MOMO_RETURN_URL=http://localhost:3000/momo-return
-MOMO_NOTIFY_URL=http://localhost:3000/api/momo-webhook
+# OAuth Clients (Public but still obfuscate)
+NEXT_PUBLIC_GOOGLE_CLIENT_ID=YOUR_GOOGLE_CLIENT_ID
+NEXT_PUBLIC_FACEBOOK_CLIENT_ID=YOUR_FACEBOOK_APP_ID
+NEXT_PUBLIC_FB_URL=https://www.facebook.com/v20.0/dialog/oauth
 
-VNP_TMNCODE=<your_vnp_tmncode>
-VNP_HASHSECRET=<your_vnp_hashsecret>
-VNP_URL=https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
-VNP_RETURN_URL=http://localhost:3000/payment/result
+# Stripe (DO NOT SHARE)
+STRIPE_WEBHOOK_SECRET=YOUR_STRIPE_WEBHOOK_SECRET
+STRIPE_SECRET_KEY=YOUR_STRIPE_SECRET_KEY
 
-SMTP_HOST=<your_smtp_host>
-SMTP_PORT=<your_smtp_port>
-SMTP_USERNAME=<your_smtp_username>
-SMTP_PASSWORD=<your_smtp_password>
-REDIS_URL=redis://127.0.0.1:6379
-IS_DOCKER=false
+# Axios
+NEXT_PUBLIC_customAxios_URL=http://localhost:5000/api
+
+# Docker
+IS_DOKER=false
+
 ```
 
 Optional: seed database
@@ -192,9 +181,12 @@ npm run seed
 
 _(Optional, recommended)_
 
-- Home page
-- Product page
-- Blog with real-time comments
+- Home page: ![Home](./screenshots/home.png)
+- Product page: ![Product](./screenshots/product.png)
+- Blogs: ![Blog](./screenshots/blog.png)
+- Blog page with live comments: ![Blog](./screenshots/blog_detail.png)
+- Login flow: ![Reset](./screenshots/login.png)
+- Dashboard: ![Reset](./screenshots/dashboard.png)
 
 ---
 
