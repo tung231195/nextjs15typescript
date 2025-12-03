@@ -5,7 +5,7 @@ import customAxios from "../utils/customAxious";
 /** get categories */
 const getCategoriesService = async () => {
   try {
-    const categories = await customAxios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/categories`);
+    const categories = await customAxios.get(`categories`);
     return categories.data;
   } catch (e: unknown) {
     if (e instanceof Error) {
@@ -21,9 +21,7 @@ const getCategoriesService = async () => {
 /** get category */
 const getCategoryService = async (id: string) => {
   try {
-    const categories = await customAxios.get(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/categories/${id}`,
-    );
+    const categories = await customAxios.get(`categories/${id}`);
     return categories.data;
   } catch (e: unknown) {
     if (e instanceof Error) {
@@ -39,10 +37,7 @@ const getCategoryService = async (id: string) => {
 /** add category */
 const addCategoriesService = async (data: Category) => {
   try {
-    const categories = await customAxios.post(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/categories`,
-      data,
-    );
+    const categories = await customAxios.post(`categories`, data);
     return categories.data;
   } catch (e: unknown) {
     const error = e as AxiosError<{ message: string }>;
@@ -59,10 +54,7 @@ const addCategoriesService = async (data: Category) => {
 const updateCategoryService = async (data: CategoryType) => {
   console.log("data update", data);
   try {
-    const categories = await customAxios.put(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/categories/${data._id}`,
-      data,
-    );
+    const categories = await customAxios.put(`categories/${data._id}`, data);
     return categories.data;
   } catch (e: unknown) {
     if (e instanceof Error) {
@@ -75,9 +67,7 @@ const updateCategoryService = async (data: CategoryType) => {
 /** delete category */
 const deleteCategoryService = async (_id: string) => {
   try {
-    const categories = await customAxios.delete(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/categories/${_id}`,
-    );
+    const categories = await customAxios.delete(`categories/${_id}`);
     return categories.data;
   } catch (e: unknown) {
     if (e instanceof Error) {

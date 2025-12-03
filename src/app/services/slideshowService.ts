@@ -5,7 +5,7 @@ import customAxios from "../utils/customAxious";
 /** get slideshows */
 const getSlideshowsService = async () => {
   try {
-    const slideshows = await customAxios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/slideshow`);
+    const slideshows = await customAxios.get(`slideshow`);
     return slideshows.data;
   } catch (e: unknown) {
     if (e instanceof Error) {
@@ -21,9 +21,7 @@ const getSlideshowsService = async () => {
 /** get slideshow */
 const getSlideshowService = async (id: string) => {
   try {
-    const slideshows = await customAxios.get(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/slideshow/${id}`,
-    );
+    const slideshows = await customAxios.get(`slideshow/${id}`);
     return slideshows.data;
   } catch (e: unknown) {
     if (e instanceof Error) {
@@ -39,10 +37,7 @@ const getSlideshowService = async (id: string) => {
 /** add slideshow */
 const addSlideshowsService = async (data: SlideshowCreate) => {
   try {
-    const slideshows = await customAxios.post(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/slideshow`,
-      data,
-    );
+    const slideshows = await customAxios.post(`slideshow`, data);
     return slideshows.data;
   } catch (e: unknown) {
     const error = e as AxiosError<{ message: string }>;
@@ -58,10 +53,7 @@ const addSlideshowsService = async (data: SlideshowCreate) => {
 /** update slideshow */
 const updateSlideshowService = async (data: SlideshowType) => {
   try {
-    const slideshows = await customAxios.put(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/slideshow/${data._id}`,
-      data,
-    );
+    const slideshows = await customAxios.put(`slideshow/${data._id}`, data);
     return slideshows.data;
   } catch (e: unknown) {
     if (e instanceof Error) {
@@ -74,9 +66,7 @@ const updateSlideshowService = async (data: SlideshowType) => {
 /** delete slideshow */
 const deleteSlideshowService = async (_id: string) => {
   try {
-    const slideshows = await customAxios.delete(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/slideshow/${_id}`,
-    );
+    const slideshows = await customAxios.delete(`slideshow/${_id}`);
     return slideshows.data;
   } catch (e: unknown) {
     if (e instanceof Error) {

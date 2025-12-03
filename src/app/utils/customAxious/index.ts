@@ -2,10 +2,14 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { refreshTokenService } from "@/app/services/authService";
 
+const BASE_URL =
+  typeof window === "undefined" && process.env.IS_DOKER === "true"
+    ? process.env.NEXT_PUBLIC_SERVER_DOCKER_URL || "http://backend:5000/api"
+    : process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000/api";
+
 // ✅ Tạo instance axios riêng
 const customAxios = axios.create({
-  baseURL:
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api` || "https://nodejs2015typescript.onrender.com/api",
+  baseURL: `${BASE_URL}` || "https://nodejs2015typescript.onrender.com/api",
   timeout: 10000,
   headers: { "Content-Type": "application/json" },
 });

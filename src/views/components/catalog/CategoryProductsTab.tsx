@@ -39,7 +39,9 @@ type TPropsCustomTab = {
   categories: CategoryType[];
 };
 export default function CategoryProductTabPanel({ categories }: TPropsCustomTab) {
-  const [value, setValue] = React.useState(categories[1]._id ?? "");
+  console.log("run docker 12346");
+  const valueDefault = categories?.[1]?._id || "";
+  const [value, setValue] = React.useState(valueDefault);
 
   const [products, setProducts] = React.useState<ProductType[]>([]);
   const [loading, setLoading] = React.useState(false);

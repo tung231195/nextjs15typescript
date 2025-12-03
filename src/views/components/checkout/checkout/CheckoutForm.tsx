@@ -156,7 +156,7 @@ const CheckoutForm = () => {
   const handleConfirmShippingMethod = () => {
     setShipping(
       shippingMethod?.method ?? "ghn",
-      shippingMethod?.shippingFee ?? 0, // ✅ mặc định 0 nếu undefined
+      shippingMethod?.shippingFee ?? 0, // mặc định 0 nếu undefined
     );
     setShowShippingMethod(false);
   };
@@ -227,7 +227,7 @@ const CheckoutForm = () => {
           toast.error("Invalid payment method");
           break;
       }
-      // ✅ check result
+      // check result
       toast.success("You have checked out successfully");
 
       router.push("/");
