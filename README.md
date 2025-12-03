@@ -4,6 +4,20 @@
 
 ---
 
+## 🚀 Live Demo / Deploy
+
+### 🌐 Frontend (Next.js 15 + TypeScript)
+
+https://nextjs15typescript.vercel.app/en
+
+### 🛠️ Admin Dashboard
+
+https://nextjs15typescript.vercel.app/en/dashboard
+
+### 🔗 Backend API (Node.js + TypeScript)
+
+https://nodejs2015typescript.onrender.com
+
 ## Table of Contents
 
 - [Overview](#overview)
@@ -88,14 +102,15 @@ git clone https://github.com/tung231195/nextjs15typescript.git
 cd nextjs15typescript
 
 # Backend setup
-cd backend
+git https://github.com/tung231195/nodejs2015typescript.git
+cd nodejs2015typescript
 npm install
 npm run dev
 
 # Frontend setup
 cd ../frontend
 npm install
-npm start
+npm run dev
 ```
 
 ---
