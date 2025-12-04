@@ -10,6 +10,9 @@
 
 https://nextjs15typescript.vercel.app/en
 
+admin account: admindemo@gmail.com / 1
+customer account: demo@gmail.com / 1
+
 ### 🛠️ Admin Dashboard
 
 https://nextjs15typescript.vercel.app/en/dashboard
