@@ -364,9 +364,9 @@ const ProductForm = (props: TPropProductForm) => {
         <ProductAttributeForm attributes={attributeOptions} />
         {showVariant && (
           <>
-            <Button onClick={onGenerateVariants} variant="outlined">
+            {/* <Button onClick={onGenerateVariants} variant="outlined">
               Generate Variants
-            </Button>
+            </Button> */}
             <ProductVariantForm attributes={attributeOptions} />
           </>
         )}

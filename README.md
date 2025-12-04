@@ -1,4 +1,4 @@
-# E-Commerce & Blog Platform
+# E-Commerce & Blog Platform Multi language
 
 > Full-featured E-commerce website with Blog system, real-time likes & comments using WebSocket. Built with **TypeScript**, **React**, **Node.js**, **MUI**, **Socket.io**, and **MongoDB**.
 

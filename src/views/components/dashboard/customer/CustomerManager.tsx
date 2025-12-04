@@ -201,7 +201,7 @@ const CustomerManager = () => {
       renderCell: (params) => {
         return (
           <>
-            <Button onClick={() => handleViewOrder(params)}>View</Button>
+            <Button onClick={() => handleViewOrder(params)}>Edit</Button>
             <Button onClick={() => handleDeleteRow(params)}>Delete</Button>
           </>
         );
