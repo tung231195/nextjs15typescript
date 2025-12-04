@@ -76,7 +76,6 @@ export default function MiniDrawer({ children }: TPropContentAdmin) {
       icon: "lucide:users",
       children: [
         { label: "All Customers", path: "/dashboard/customer" },
-        { label: "Groups", path: "/dashboard/customers/groups" },
         { label: "Reviews", path: "/dashboard/reviews" },
       ],
     },
@@ -98,7 +97,6 @@ export default function MiniDrawer({ children }: TPropContentAdmin) {
       icon: "lucide:settings",
       children: [
         { label: "General", path: "/dashboard/settings/general" },
-        { label: "Users & Roles", path: "/dashboard/settings/users" },
         { label: "Payments", path: "/dashboard/payment" },
         { label: "Shipping", path: "/dashboard/delivery" },
         { label: "Email", path: "/dashboard/settings/email" },
